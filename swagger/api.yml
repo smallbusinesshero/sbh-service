@@ -1,0 +1,112 @@
+swagger: '2.0'
+info:
+  description: stores api
+  version: 1.0.0
+  title: stores api
+  # put the contact info for your development or API team
+  contact:
+    email: nicolai.schug@gmail.com
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+  - name: public
+    description: Public api calls can be accessed without any restrictions
+
+paths:
+  /v1/stores:
+    get:
+      tags:
+        - public
+      summary: searches for stores
+      operationId: searchStores
+      description: |
+        By passing in the appropriate options, you can search for
+        available stores in the system
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: geographicCoordinate
+          description: pass an optional geographiCoordinate to look for stores nearby this coordinate
+          required: false
+          type: string
+        - in: query
+          name: limit
+          description: maximum number of records to return
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 50
+      responses:
+        200:
+          description: search results matching criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StoreItem'
+        400:
+          description: bad input parameter
+  /v1/stores/{storeId}:
+    get:
+      tags:
+        - public
+      summary: Find store by ID
+      description: Returns a single store object
+      operationId: getStoreById
+      produces:
+        - application/json
+      parameters:
+        - name: storeId
+          in: path
+          description: ID of store to select
+          required: true
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StoreItem'
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Store not found
+definitions:
+  StoreItem:
+    type: object
+    required:
+      - id
+      - name
+      - address
+      - geographicCoordinate
+    properties:
+      id:
+        $ref: '#/definitions/Id'
+      name:
+        type: string
+        example: grocery store
+      address:
+        type: string
+        example: Mainroad 1, 88888 Testcity
+      geographicCoordinate:
+        $ref: '#/definitions/LatLng'
+  Id:
+    type: string
+    format: uuid
+    example: d290f1ee-6c54-4b01-90e6-d701748f0851
+  LatLng:
+    description: geographic coordinate which holds latitude and longitude as described in goolge maps api https://developers.google.com/maps/documentation/javascript/reference/coordinates
+    required:
+      - lat
+      - lng
+    properties:
+      lat:
+        type: string
+        example: "-34.089"
+      lng:
+        type: string
+        example: "151.836"
