@@ -13,3 +13,8 @@ Or build and start the service via mvn spring-boot plugin
 
 - $ mvn clean install
 - $ mvn spring-boot:run
+
+# Build as Docker container
+
+- $ mvn package -DskipTests
+- $ docker build -t dds-wvv-backend .
