@@ -18,6 +18,19 @@ Or build and start the service via mvn spring-boot plugin
 - $ mvn clean install
 - $ mvn spring-boot:run
 
+# How to connect to commercetools api
+- to connect the spring boot app to the commercetools api you need to set the following config inside the application.yml
+
+
+````
+ctp: 
+  projectKey: ${ctp.projectKey}
+  clientId: ${ctp.clientId}
+  clientSecret: ${ctp.clientSecret}
+  authUrl: ${ctp.authUrl}
+  apiUrl: ${ctp.apiUrl}
+````
+
 # Build as Docker container
 
 - $ mvn package -DskipTests

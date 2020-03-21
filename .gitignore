@@ -39,3 +39,5 @@ transaction-logs
 secrets.yml
 .gradletasknamecache
 .sts4-cache
+
+/src/main/resources/application-local.yml
