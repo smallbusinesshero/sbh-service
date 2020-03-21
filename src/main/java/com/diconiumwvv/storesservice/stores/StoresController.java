@@ -13,11 +13,6 @@ import java.util.Map;
 
 
 @RestController
-
-@CrossOrigin(origins = {
-        "http://localhost:3000",
-        "https://dds-wvv-frontend.herokuapp.com"
-})
 @Api(tags = "Stores API")
 public class StoresController {
 
