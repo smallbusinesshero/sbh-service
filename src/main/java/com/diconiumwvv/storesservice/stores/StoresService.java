@@ -3,7 +3,6 @@ package com.diconiumwvv.storesservice.stores;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDTO;
 import io.sphere.sdk.channels.Channel;
 import io.sphere.sdk.channels.queries.ChannelByIdGet;
-import io.sphere.sdk.channels.queries.ChannelQuery;
 import io.sphere.sdk.channels.queries.ChannelQueryBuilder;
 import io.sphere.sdk.client.BlockingSphereClient;
 import io.sphere.sdk.queries.PagedQueryResult;
@@ -32,13 +31,19 @@ public class StoresService {
 
     public List<StoreDTO> getStoresByNeighborhood(String neighborhood) throws ExecutionException, InterruptedException {
         PagedQueryResult<Channel> channelPagedQueryResult1 = client.execute(ChannelQueryBuilder.of().build()).toCompletableFuture().get();
-        List<StoreDTO> collect = channelPagedQueryResult1.getResults().stream()
+
+        return channelPagedQueryResult1.getResults().stream()
                 .map(channel -> conversionService.convert(channel, StoreDTO.class))
                 .filter(Objects::nonNull)
                 .filter(store -> store.getNeighborhood() != null)
                 .filter(store -> store.getNeighborhood().contains(neighborhood))
                 .collect(Collectors.toList());
+    }
 
-        return collect;
+    public List<StoreDTO> getAllStores() throws ExecutionException, InterruptedException {
+        PagedQueryResult<Channel> channelPagedQueryResult1 = client.execute(ChannelQueryBuilder.of().build()).toCompletableFuture().get();
+        return channelPagedQueryResult1.getResults().stream()
+                .map(channel -> conversionService.convert(channel, StoreDTO.class))
+                .collect(Collectors.toList());
     }
 }
