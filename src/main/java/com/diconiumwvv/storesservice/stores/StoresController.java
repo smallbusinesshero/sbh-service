@@ -40,7 +40,7 @@ public class StoresController {
     })
     @GetMapping(value = "/stores/", produces = "application/json")
     public List<StoreDTO> getStoresByQuery(@ApiParam(value = "id", example = "Neukölln") @RequestParam(required = false) String neighborhood) throws ExecutionException, InterruptedException {
-        if(StringUtils.isNotBlank(neighborhood)) {
+        if (StringUtils.isNotBlank(neighborhood)) {
             return storesService.getStoresByNeighborhood(neighborhood);
         }
         return storesService.getAllStores();

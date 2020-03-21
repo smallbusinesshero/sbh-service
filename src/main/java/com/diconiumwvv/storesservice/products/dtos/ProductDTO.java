@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Data
 @Builder
-@JsonPropertyOrder({ "id", "name", "description", "categories", "categoryOrderHints", "slug", "metaTitle", "metaDescription", "price", "masterVariant", "variants" })
+@JsonPropertyOrder({"id", "name", "description", "categories", "categoryOrderHints", "slug", "metaTitle", "metaDescription", "price", "masterVariant", "variants"})
 public class ProductDTO {
 
     private String id;
