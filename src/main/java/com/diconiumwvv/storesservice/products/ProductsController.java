@@ -27,10 +27,10 @@ import java.util.stream.Collectors;
 public class ProductsController {
 
     @Resource
-    ConversionService conversionService;
+    private ConversionService conversionService;
 
     @Resource
-    ProductsService productsService;
+    private ProductsService productsService;
 
     @ApiOperation(value = "get all products for one specific store")
     @ApiResponses(value = {
@@ -38,7 +38,7 @@ public class ProductsController {
             @ApiResponse(code = 500, message = "An unexpected error occurred")
     })
     @GetMapping(value = "/products/")
-    public List<ProductDTO> getProductsByStoreId(@RequestParam String storeId) {
+    public List<ProductDTO> getProductsByStoreId(@ApiParam(value = "storeId", required = true, example = "ddf24dc6-1a2d-4391-8f34-c5c322b21c1e") @RequestParam String storeId) {
         List<ProductProjection> productsByStore = productsService.getProductsByStore(storeId);
         return productsByStore.stream()
                 .map(product -> conversionService.convert(product, ProductDTO.class))

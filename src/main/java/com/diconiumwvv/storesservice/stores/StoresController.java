@@ -1,19 +1,21 @@
 package com.diconiumwvv.storesservice.stores;
 
-import com.diconiumwvv.storesservice.stores.dtos.AddressDTO;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDTO;
 import io.sphere.sdk.channels.Channel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -26,10 +28,10 @@ import java.util.stream.Collectors;
 public class StoresController {
 
     @Resource
-    ConversionService conversionService;
+    private ConversionService conversionService;
 
     @Resource
-    StoresService storesService;
+    private StoresService storesService;
 
     @ApiOperation(value = "search for stores in your neighborhood")
     @ApiResponses(value = {
@@ -37,12 +39,8 @@ public class StoresController {
             @ApiResponse(code = 500, message = "An unexpected error occurred")
     })
     @GetMapping(value = "/stores/")
-    public List<StoreDTO> getStoresByQuery(@RequestParam(required = false) String neighborhood) throws ExecutionException, InterruptedException {
-        List<Channel> stores = storesService.getStoresByNeighborhood(neighborhood);
-
-        return stores.stream()
-                .map(store -> conversionService.convert(store, StoreDTO.class))
-                .collect(Collectors.toList());
+    public List<StoreDTO> getStoresByQuery(@ApiParam(value = "id", example = "Neukölln") @RequestParam String neighborhood) throws ExecutionException, InterruptedException {
+        return storesService.getStoresByNeighborhood(neighborhood);
     }
 
     @ApiOperation(value = "get a specific store by ID")
@@ -51,23 +49,8 @@ public class StoresController {
             @ApiResponse(code = 500, message = "An unexpected error occurred")
     })
     @GetMapping(value = "/stores/{id}")
-    public StoreDTO getStoreById(@PathVariable(required = false) String id) {
-        return getMockStore();
-    }
-
-    private StoreDTO getMockStore() {
-        return StoreDTO.builder()
-                .id("d290f1ee-6c54-4b01-90e6-d701748f0851")
-                .description(Collections.singletonMap(Locale.GERMANY, "Bei golden! findest du alles, was dich glücklich macht.\n\n„Symbiose“ bringt es ganz gut auf den Punkt, wenn es um die Beschreibung des Ladens vom Mutter-Tochter-Duo Margret und Gisa Schleef geht. Alte und neue Produkte sind gleichwertig vereint. Nostalgie und Moderne können sich auf 40qm Fläche entfalten. Dazwischen sprießen frische Blumen und Zimmerpflanzen. Die Inhaberinnen beweisen Geschmack bei der Gestaltung als auch bei der Produktauswahl in ihrem Laden.\n\ngolden! heißt das gemeinsame Projekt der beiden und ist in der Sonnenallee in Neukölln zu finden. Komm vorbei, lass dich inspirieren, gönn dir eine Kleinigkeit und mach es dir anschließend Zuhause gemütlich. Denn hier wird auf Qualität und Nachhaltigkeit geachtet. Da die alten gesammelten Schätzchen Einzelstücke sind, wechselt das Angebot stetig. Auch das Blumen- und Pflanzenangebot ist je nach Saison wechselnd. In golden! steckt Liebe und Herzblut zweier kreativer Unternehmer-Frauen.\n"))
-                .neighborhood(Collections.singletonList("Berlin West"))
-                .address(AddressDTO.builder()
-                        .streetName("Sonnenallee")
-                        .streetNumber("64")
-                        .postalCode("12045")
-                        .city("Berlin")
-                        .country("DE")
-                        .build())
-                .name(Collections.singletonMap(Locale.GERMANY, "Golden Neukölln"))
-                .build();
+    public StoreDTO getStoreById(@ApiParam(value = "id", example = "ddf24dc6-1a2d-4391-8f34-c5c322b21c1e") @PathVariable String id) throws ExecutionException, InterruptedException {
+        Channel storeForID = storesService.getStoreForID(id);
+        return conversionService.convert(storeForID, StoreDTO.class);
     }
 }
