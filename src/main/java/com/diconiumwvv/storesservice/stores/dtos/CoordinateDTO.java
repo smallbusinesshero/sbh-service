@@ -1,4 +1,4 @@
-package com.diconiumwvv.storesservice.stores;
+package com.diconiumwvv.storesservice.stores.dtos;
 
 import lombok.Builder;
 import lombok.Data;
@@ -6,4 +6,5 @@ import lombok.Data;
 @Data
 @Builder
 public class CoordinateDTO {
+
 }

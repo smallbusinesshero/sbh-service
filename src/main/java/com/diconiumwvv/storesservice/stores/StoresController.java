@@ -1,5 +1,7 @@
 package com.diconiumwvv.storesservice.stores;
 
+import com.diconiumwvv.storesservice.stores.dtos.AddressDTO;
+import com.diconiumwvv.storesservice.stores.dtos.StoreDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -9,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
-
+@CrossOrigin(origins = {
+        "http://localhost:3000",
+        "https://dds-wvv-frontend.herokuapp.com"
+})
 @RestController
 @Api(tags = "Stores API")
 public class StoresController {
