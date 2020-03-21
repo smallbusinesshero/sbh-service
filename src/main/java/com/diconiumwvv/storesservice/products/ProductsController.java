@@ -1,6 +1,6 @@
 package com.diconiumwvv.storesservice.products;
 
-import com.diconiumwvv.storesservice.products.dtos.ProductDTO;
+import com.diconiumwvv.storesservice.products.dtos.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @CrossOrigin(origins = {
         "http://localhost:3000",
@@ -42,6 +43,22 @@ public class ProductsController {
     }
 
     private ProductDTO getMockProduct() {
-        return ProductDTO.builder().build();
+        return ProductDTO.builder()
+                .id("ddf24dc6-1a2d-4391-8f34-c5c322b21c1e")
+                .categories(Collections.singletonList("Garten"))
+                .name(Collections.singletonMap(Locale.GERMANY, "Silikontopf"))
+                .description(Collections.singletonMap(Locale.GERMANY, "Silikonübertopf in verschiedemen Farbenen."))
+                .slug(Collections.singletonMap(Locale.GERMANY, "silikontopf"))
+                .metaTitle(Collections.singletonMap(Locale.GERMANY, ""))
+                .metaDescription(Collections.singletonMap(Locale.GERMANY, ""))
+                .masterVariant(ProductVariantDTO.builder()
+                        .id("1")
+                        .sku("golden-silkontopf")
+                        .prices(Collections.singletonList(PriceDTO.builder().build()))
+                        .images(Collections.singletonList(ImageDTO.builder().build()))
+                        .attributes(Collections.singletonList(AttributesDTO.builder().build()))
+                        .assets(Collections.singletonList(AssetsDTO.builder().build()))
+                        .build())
+                .build();
     }
 }

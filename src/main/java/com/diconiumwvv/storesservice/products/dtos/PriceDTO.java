@@ -1,11 +1,10 @@
 package com.diconiumwvv.storesservice.products.dtos;
 
-import lombok.experimental.Tolerate;
+import lombok.Builder;
+import lombok.Data;
 
+@Data
+@Builder
 public class PriceDTO {
 
-    @Tolerate
-    public PriceDTO() {
-        // Required for Jackson
-    }
 }
