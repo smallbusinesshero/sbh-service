@@ -1,6 +1,7 @@
 package com.diconiumwvv.storesservice;
 
 import com.diconiumwvv.storesservice.products.ProductProjectionToProductDTOConverter;
+import com.diconiumwvv.storesservice.stores.dtos.StoreToStoreDTOConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -11,5 +12,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new ProductProjectionToProductDTOConverter());
+        registry.addConverter(new StoreToStoreDTOConverter());
     }
 }
