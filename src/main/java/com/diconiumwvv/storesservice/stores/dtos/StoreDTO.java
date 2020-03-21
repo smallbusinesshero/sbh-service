@@ -12,7 +12,7 @@ import java.util.List;
 
 @Data
 @Builder
-@JsonPropertyOrder({ "id", "name", "description", "address", "neighborhood", "geoLocation", "profileImageURL", "shopOwnerImage", "contact", "shopOwnerName" })
+@JsonPropertyOrder({"id", "name", "description", "address", "neighborhood", "geoLocation", "profileImageURL", "shopOwnerImage", "contact", "shopOwnerName"})
 public class StoreDTO {
 
     private String id;

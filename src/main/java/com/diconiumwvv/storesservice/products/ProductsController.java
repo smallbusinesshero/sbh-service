@@ -1,7 +1,6 @@
 package com.diconiumwvv.storesservice.products;
 
 import com.diconiumwvv.storesservice.products.dtos.ProductDTO;
-import com.sun.xml.internal.ws.api.pipe.ContentType;
 import io.sphere.sdk.products.ProductProjection;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
