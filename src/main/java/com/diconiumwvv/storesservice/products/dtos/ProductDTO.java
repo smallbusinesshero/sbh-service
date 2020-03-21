@@ -1,5 +1,6 @@
 package com.diconiumwvv.storesservice.products.dtos;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.sphere.sdk.categories.Category;
 import io.sphere.sdk.models.LocalizedString;
 import io.sphere.sdk.models.Reference;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 @Data
 @Builder
+@JsonPropertyOrder({ "id", "name", "description", "categories", "categoryOrderHints", "slug", "metaTitle", "metaDescription", "price", "masterVariant", "variants" })
 public class ProductDTO {
 
     private String id;
