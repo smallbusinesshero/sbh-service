@@ -44,7 +44,7 @@ public class StoresController {
         return StoreDTO.builder()
                 .id("d290f1ee-6c54-4b01-90e6-d701748f0851")
                 .description(Collections.singletonMap(Locale.GERMANY, "Bei golden! findest du alles, was dich glücklich macht.\n\n„Symbiose“ bringt es ganz gut auf den Punkt, wenn es um die Beschreibung des Ladens vom Mutter-Tochter-Duo Margret und Gisa Schleef geht. Alte und neue Produkte sind gleichwertig vereint. Nostalgie und Moderne können sich auf 40qm Fläche entfalten. Dazwischen sprießen frische Blumen und Zimmerpflanzen. Die Inhaberinnen beweisen Geschmack bei der Gestaltung als auch bei der Produktauswahl in ihrem Laden.\n\ngolden! heißt das gemeinsame Projekt der beiden und ist in der Sonnenallee in Neukölln zu finden. Komm vorbei, lass dich inspirieren, gönn dir eine Kleinigkeit und mach es dir anschließend Zuhause gemütlich. Denn hier wird auf Qualität und Nachhaltigkeit geachtet. Da die alten gesammelten Schätzchen Einzelstücke sind, wechselt das Angebot stetig. Auch das Blumen- und Pflanzenangebot ist je nach Saison wechselnd. In golden! steckt Liebe und Herzblut zweier kreativer Unternehmer-Frauen.\n"))
-                .neighborhood("Berlin West")
+                .neighborhood(Collections.singletonList("Berlin West"))
                 .address(AddressDTO.builder()
                         .streetName("Sonnenallee")
                         .streetNumber("64")
