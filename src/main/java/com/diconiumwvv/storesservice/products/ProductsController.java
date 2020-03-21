@@ -1,6 +1,7 @@
 package com.diconiumwvv.storesservice.products;
 
 import com.diconiumwvv.storesservice.products.dtos.*;
+import io.sphere.sdk.products.Product;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -10,9 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 @CrossOrigin(origins = {
         "http://localhost:3000",
@@ -21,6 +24,9 @@ import java.util.Locale;
 @RestController
 @Api(tags = "Products API")
 public class ProductsController {
+
+    @Resource
+    ProductsService productsService;
 
     @ApiOperation(value = "get all products for one specific store")
     @ApiResponses(value = {
@@ -40,6 +46,16 @@ public class ProductsController {
     @GetMapping(value = "/products/{id}")
     public ProductDTO getProductById(@RequestParam String id) {
         return getMockProduct();
+    }
+
+    @ApiOperation(value = "get product from commercetools")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "ok"),
+            @ApiResponse(code = 500, message = "An unexpected error occurred")
+    })
+    @GetMapping(value = "/products/cm/{id}")
+    public Product getProductAsInCommercetools(@RequestParam String id) throws ExecutionException, InterruptedException {
+        return productsService.getProductByID(id);
     }
 
     private ProductDTO getMockProduct() {

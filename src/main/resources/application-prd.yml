@@ -2,9 +2,9 @@
 api:
   version: 1.0
 
-swagger:  
+swagger:
   enabled: true
-  title: stores API
+  title: PROD - Stores API
   description: API to find a store nearby.
   useDefaultResponseMessages: false
   enableUrlTemplating: false

@@ -26,6 +26,7 @@
         <swagger-annotations.version>1.5.21</swagger-annotations.version>
         <swagger-models.version>1.5.21</swagger-models.version>
         <google-maps-services>0.11.0</google-maps-services>
+        <ctp.sdk.version>1.50.0</ctp.sdk.version>
     </properties>
 
 
@@ -100,6 +101,21 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.25</version>
+        </dependency>
+        <dependency>
+            <groupId>com.commercetools.sdk.jvm.core</groupId>
+            <artifactId>commercetools-models</artifactId>
+            <version>${ctp.sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.commercetools.sdk.jvm.core</groupId>
+            <artifactId>commercetools-java-client</artifactId>
+            <version>${ctp.sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.commercetools.sdk.jvm.core</groupId>
+            <artifactId>commercetools-convenience</artifactId>
+            <version>${ctp.sdk.version}</version>
         </dependency>
     </dependencies>
 
