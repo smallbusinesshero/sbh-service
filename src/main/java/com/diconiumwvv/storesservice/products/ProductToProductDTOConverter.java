@@ -14,7 +14,8 @@ public class ProductToProductDTOConverter implements Converter<Product, ProductD
         ProductDTO.ProductDTOBuilder builder = ProductDTO.builder();
         builder.id(product.getId());
 
-        Optional.ofNullable(product.getMasterData().getCurrentUnsafe()).ifPresent(productData -> {
+        Optional.ofNullable(product.getMasterData()
+                .getCurrent()).ifPresent(productData -> {
 
             builder.name(productData.getName())
                     .description(productData.getDescription())
