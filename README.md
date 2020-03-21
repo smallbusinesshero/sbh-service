@@ -1,5 +1,9 @@
 # dds-wvv-backend
 
+## swagger-ui
+- [Local swagger-ui](http://localhost:8080/swagger-ui.html#/)
+- [Heroku master-branch swagger-ui](https://dds-wvv-backend.herokuapp.com/swagger-ui.html#/)
+
 ## Requirements
 
 For running the backen service you need:
