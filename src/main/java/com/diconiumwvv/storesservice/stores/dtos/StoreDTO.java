@@ -1,5 +1,6 @@
 package com.diconiumwvv.storesservice.stores.dtos;
 
+import io.sphere.sdk.models.LocalizedString;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
@@ -13,11 +14,15 @@ import java.util.Map;
 public class StoreDTO {
 
     private String id;
-    private Map<Locale, String> name;
-    private Map<Locale, String> description;
+    private LocalizedString name;
+    private LocalizedString description;
     private AddressDTO address;
     private List<String> neighborhood;
     private GeoLocationDTO geoLocation;
+    private String profileImageURL;
+    private String shopOwnerImage;
+    private String contact;
+    private String shopOwnerName;
 
     @Tolerate
     public StoreDTO() {

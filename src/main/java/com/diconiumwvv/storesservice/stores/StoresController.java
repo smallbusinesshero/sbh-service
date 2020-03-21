@@ -2,15 +2,20 @@ package com.diconiumwvv.storesservice.stores;
 
 import com.diconiumwvv.storesservice.stores.dtos.AddressDTO;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDTO;
+import io.sphere.sdk.channels.Channel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = {
         "http://localhost:3000",
@@ -20,14 +25,24 @@ import java.util.Locale;
 @Api(tags = "Stores API")
 public class StoresController {
 
+    @Resource
+    ConversionService conversionService;
+
+    @Resource
+    StoresService storesService;
+
     @ApiOperation(value = "search for stores in your neighborhood")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "ok"),
             @ApiResponse(code = 500, message = "An unexpected error occurred")
     })
     @GetMapping(value = "/stores/")
-    public List<StoreDTO> getStoresByQuery(@RequestParam(required = false) String neighborhood) {
-        return Collections.singletonList(getMockStore());
+    public List<StoreDTO> getStoresByQuery(@RequestParam(required = false) String neighborhood) throws ExecutionException, InterruptedException {
+        List<Channel> stores = storesService.getStoresByNeighborhood(neighborhood);
+
+        return stores.stream()
+                .map(store -> conversionService.convert(store, StoreDTO.class))
+                .collect(Collectors.toList());
     }
 
     @ApiOperation(value = "get a specific store by ID")
