@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = {
         "http://localhost:3000",
@@ -38,7 +37,7 @@ public class StoresController {
             @ApiResponse(code = 200, message = "ok"),
             @ApiResponse(code = 500, message = "An unexpected error occurred")
     })
-    @GetMapping(value = "/stores/")
+    @GetMapping(value = "/stores/", produces = "application/json")
     public List<StoreDTO> getStoresByQuery(@ApiParam(value = "id", example = "Neukölln") @RequestParam String neighborhood) throws ExecutionException, InterruptedException {
         return storesService.getStoresByNeighborhood(neighborhood);
     }
@@ -48,7 +47,7 @@ public class StoresController {
             @ApiResponse(code = 200, message = "ok"),
             @ApiResponse(code = 500, message = "An unexpected error occurred")
     })
-    @GetMapping(value = "/stores/{id}")
+    @GetMapping(value = "/stores/{id}", produces = "application/json")
     public StoreDTO getStoreById(@ApiParam(value = "id", example = "ddf24dc6-1a2d-4391-8f34-c5c322b21c1e") @PathVariable String id) throws ExecutionException, InterruptedException {
         Channel storeForID = storesService.getStoreForID(id);
         return conversionService.convert(storeForID, StoreDTO.class);
