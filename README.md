@@ -1,18 +1,19 @@
 # dds-wvv-backend
 
 ## swagger-ui
+Every API is automatically published to swagger-ui.
 - [Local swagger-ui](http://localhost:8080/swagger-ui.html#/)
 - [Heroku master-branch swagger-ui](https://dds-wvv-backend.herokuapp.com/swagger-ui.html#/)
 
 ## Lombok
-This project uses [Project Lombok] (https://projectlombok.org/)
+This project uses [Project Lombok](https://projectlombok.org/)
 Please make sure you install the correct Lombok Plugin for your used IDE to get correct code completion.
-- [intellij plugin] (https://projectlombok.org/setup/intellij)
-- [eclipse plugin] (https://projectlombok.org/setup/eclipse)
-- [other IDEs] (https://projectlombok.org/setup/)
+- [intellij plugin](https://projectlombok.org/setup/intellij)
+- [eclipse plugin](https://projectlombok.org/setup/eclipse)
+- [other IDEs](https://projectlombok.org/setup/)
 
 ## SpringBoot2
-This project is build on the framework SpringBoot2 [documentation] (https://spring.io/projects/spring-boot)
+This project is build on the framework SpringBoot2 [documentation](https://spring.io/projects/spring-boot)
 
 ## Requirements
 
