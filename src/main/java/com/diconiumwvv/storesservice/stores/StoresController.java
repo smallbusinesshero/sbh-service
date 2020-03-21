@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = {
         "http://localhost:3000",
@@ -33,14 +33,17 @@ public class StoresController {
     @Resource
     private StoresService storesService;
 
-    @ApiOperation(value = "search for stores in your neighborhood")
+    @ApiOperation(value = "search for stores in your neighborhood or get all stores")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "ok"),
             @ApiResponse(code = 500, message = "An unexpected error occurred")
     })
-    @GetMapping(value = "/stores/")
-    public List<StoreDTO> getStoresByQuery(@ApiParam(value = "id", example = "Neukölln") @RequestParam String neighborhood) throws ExecutionException, InterruptedException {
-        return storesService.getStoresByNeighborhood(neighborhood);
+    @GetMapping(value = "/stores/", produces = "application/json")
+    public List<StoreDTO> getStoresByQuery(@ApiParam(value = "id", example = "Neukölln") @RequestParam(required = false) String neighborhood) throws ExecutionException, InterruptedException {
+        if(StringUtils.isNotBlank(neighborhood)) {
+            return storesService.getStoresByNeighborhood(neighborhood);
+        }
+        return storesService.getAllStores();
     }
 
     @ApiOperation(value = "get a specific store by ID")
@@ -48,7 +51,7 @@ public class StoresController {
             @ApiResponse(code = 200, message = "ok"),
             @ApiResponse(code = 500, message = "An unexpected error occurred")
     })
-    @GetMapping(value = "/stores/{id}")
+    @GetMapping(value = "/stores/{id}", produces = "application/json")
     public StoreDTO getStoreById(@ApiParam(value = "id", example = "ddf24dc6-1a2d-4391-8f34-c5c322b21c1e") @PathVariable String id) throws ExecutionException, InterruptedException {
         Channel storeForID = storesService.getStoreForID(id);
         return conversionService.convert(storeForID, StoreDTO.class);

@@ -1,6 +1,7 @@
 package com.diconiumwvv.storesservice.products;
 
 import com.diconiumwvv.storesservice.products.dtos.ProductDTO;
+import com.sun.xml.internal.ws.api.pipe.ContentType;
 import io.sphere.sdk.products.ProductProjection;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,7 +38,7 @@ public class ProductsController {
             @ApiResponse(code = 200, message = "ok"),
             @ApiResponse(code = 500, message = "An unexpected error occurred")
     })
-    @GetMapping(value = "/products/")
+    @GetMapping(value = "/products/", produces = "application/json")
     public List<ProductDTO> getProductsByStoreId(@ApiParam(value = "storeId", required = true, example = "ddf24dc6-1a2d-4391-8f34-c5c322b21c1e") @RequestParam String storeId) {
         List<ProductProjection> productsByStore = productsService.getProductsByStore(storeId);
         return productsByStore.stream()
@@ -50,7 +51,7 @@ public class ProductsController {
             @ApiResponse(code = 200, message = "ok"),
             @ApiResponse(code = 500, message = "An unexpected error occurred")
     })
-    @GetMapping(value = "/products/{id}")
+    @GetMapping(value = "/products/{id}", produces = "application/json")
     public ProductDTO getProductById(@ApiParam(value = "id", required = true, example = "885dfe52-c401-42fd-bf8d-80d6b7c80dd2") @PathVariable String id) {
         ProductProjection productByID = productsService.getProductByID(id);
         return conversionService.convert(productByID, ProductDTO.class);
