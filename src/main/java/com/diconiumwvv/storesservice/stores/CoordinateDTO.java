@@ -5,8 +5,5 @@ import lombok.Data;
 
 @Data
 @Builder
-public class GeographicCoordinateDTO {
-
-    private String latitude;
-    private String longitude;
+public class CoordinateDTO {
 }
