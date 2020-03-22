@@ -27,7 +27,7 @@ public class ProductDTO {
     private LocalizedString slug;
     private LocalizedString metaTitle;
     private LocalizedString metaDescription;
-    private Price price;
+    private PriceDTO price;
     private ProductVariant masterVariant;
     private List<ProductVariant> variants;
 
