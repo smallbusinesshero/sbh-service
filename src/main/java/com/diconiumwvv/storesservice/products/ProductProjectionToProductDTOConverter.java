@@ -20,7 +20,7 @@ public class ProductProjectionToProductDTOConverter implements Converter<Product
                     String currencyCode = price.getValue().getCurrency().getCurrencyCode();
                     PriceDTO priceDTO = PriceDTO.builder()
                             .currencyCode(currencyCode)
-                            .value(BigDecimal.valueOf(number.longValueExact())).build();
+                            .value(BigDecimal.valueOf(number.doubleValueExact())).build();
 
                     builder.price(priceDTO);
                 }
