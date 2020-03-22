@@ -21,7 +21,9 @@ import java.util.concurrent.ExecutionException;
 
 @CrossOrigin(origins = {
         "http://localhost:3000",
-        "https://dds-wvv-frontend.herokuapp.com"
+        "https://dds-wvv-frontend.herokuapp.com",
+        "http://smallbusinesshero.de",
+        "http://www.smallbusinesshero.de"
 })
 @RestController
 @Api(tags = "Stores API")
