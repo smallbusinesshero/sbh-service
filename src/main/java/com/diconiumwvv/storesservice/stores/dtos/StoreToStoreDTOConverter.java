@@ -18,6 +18,9 @@ public class StoreToStoreDTOConverter implements Converter<Channel, StoreDTO> {
     public static final String CONTACT = "contact";
     public static final String PROFILE_VIDEO_URL = "profileVideoURL";
     public static final String PROFILE_IMAGE_URL = "profileImageURL";
+    public static final String PHONE = "phone";
+    public static final String EMAIL = "email";
+    public static final String HOMEPAGE = "homepage";
 
     @Override
     public StoreDTO convert(Channel channel) {
@@ -44,6 +47,12 @@ public class StoreToStoreDTOConverter implements Converter<Channel, StoreDTO> {
             builder.profileVideoURL(profileVideoURL);
             String profileImageURL = customFields.getFieldAsString(PROFILE_IMAGE_URL);
             builder.profileImageURL(profileImageURL);
+            String phone = customFields.getFieldAsString(PHONE);
+            builder.phone(phone);
+            String email = customFields.getFieldAsString(EMAIL);
+            builder.email(email);
+            String homepage = customFields.getFieldAsString(HOMEPAGE);
+            builder.homepage(homepage);
         });
 
         return builder.build();

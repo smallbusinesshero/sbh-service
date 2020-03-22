@@ -26,6 +26,9 @@ public class StoreDTO {
     private String shopOwnerImage;
     private String contact;
     private String shopOwnerName;
+    private String phone;
+    private String email;
+    private String homepage;
 
     @Tolerate
     public StoreDTO() {
