@@ -43,16 +43,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-core</artifactId>
-            <version>${feign.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-jackson</artifactId>
-            <version>${feign.version}</version>
-        </dependency>
         <!-- commercetool requires netty but does not bring its own dependency -->
         <dependency>
             <groupId>io.netty</groupId>
