@@ -16,17 +16,15 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <feign.version>10.2.3</feign.version>
         <junit.jupiter.version>5.5.1</junit.jupiter.version>
         <surefire.version>3.0.0-M3</surefire.version>
         <apache.commonslang3.version>3.9</apache.commonslang3.version>
-        <org.mock-server.mockserver-netty>5.8.1</org.mock-server.mockserver-netty>
         <jacoco-maven-plugin>0.8.5</jacoco-maven-plugin>
         <swagger.version>2.9.2</swagger.version>
         <swagger-annotations.version>1.5.21</swagger-annotations.version>
         <swagger-models.version>1.5.21</swagger-models.version>
-        <google-maps-services>0.11.0</google-maps-services>
         <ctp.sdk.version>1.50.0</ctp.sdk.version>
+        <netty-all>4.1.48.Final</netty-all>
     </properties>
 
 
@@ -55,11 +53,11 @@
             <artifactId>feign-jackson</artifactId>
             <version>${feign.version}</version>
         </dependency>
+        <!-- commercetool requires netty but does not bring its own dependency -->
         <dependency>
-            <groupId>org.mock-server</groupId>
-            <artifactId>mockserver-netty</artifactId>
-            <version>${org.mock-server.mockserver-netty}</version>
-            <scope>test</scope>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>${netty-all}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -91,16 +89,6 @@
             <groupId>io.swagger</groupId>
             <artifactId>swagger-models</artifactId>
             <version>${swagger-models.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.maps</groupId>
-            <artifactId>google-maps-services</artifactId>
-            <version>${google-maps-services}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.7.25</version>
         </dependency>
         <dependency>
             <groupId>com.commercetools.sdk.jvm.core</groupId>
