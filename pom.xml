@@ -25,6 +25,7 @@
         <swagger-models.version>1.5.21</swagger-models.version>
         <ctp.sdk.version>1.50.0</ctp.sdk.version>
         <netty-all>4.1.48.Final</netty-all>
+        <google-maps-services>0.11.0</google-maps-services>
     </properties>
 
 
@@ -94,6 +95,11 @@
             <groupId>com.commercetools.sdk.jvm.core</groupId>
             <artifactId>commercetools-convenience</artifactId>
             <version>${ctp.sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.maps</groupId>
+            <artifactId>google-maps-services</artifactId>
+            <version>${google-maps-services}</version>
         </dependency>
     </dependencies>
 
