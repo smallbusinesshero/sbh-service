@@ -11,6 +11,7 @@ import io.sphere.sdk.channels.queries.ChannelQueryBuilder;
 import io.sphere.sdk.client.BlockingSphereClient;
 import io.sphere.sdk.models.Point;
 import io.sphere.sdk.queries.PagedQueryResult;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
@@ -58,10 +59,9 @@ public class StoresService {
     }
 
     /**
-     *
      * @param longitude
      * @param latitude
-     * @param radius radius in meter
+     * @param radius    radius in meter
      * @return List of stores in range
      */
     public List<StoreDTO> searchStoreByLatLng(double longitude, double latitude, double radius) {
@@ -74,13 +74,34 @@ public class StoresService {
                 .collect(Collectors.toList());
     }
 
-    public List<StoreDTO> searchForStore(StoreSearchDTO storeSearchDTO) {
-
+    private List<StoreDTO> searchByLocation(StoreSearchDTO storeSearchDTO) {
         return Arrays.stream(geoService.geocode(storeSearchDTO.getAddress()))
                 .findFirst()
                 .map(geocodingResult -> {
                     LatLng location = geocodingResult.geometry.location;
                     return searchStoreByLatLng(location.lng, location.lat, storeSearchDTO.getRadius());
                 }).orElse(Collections.emptyList());
+    }
+
+    public List<StoreDTO> searchStore(String neighborhood) throws ExecutionException, InterruptedException {
+        if (StringUtils.isBlank(neighborhood)) {
+            return getAllStores();
+        }
+
+        StoreSearchDTO storeSearchDTO = new StoreSearchDTO();
+        storeSearchDTO.setAddress(neighborhood);
+        storeSearchDTO.setRadius(5000.0);
+        List<StoreDTO> storeDTOS;
+
+        storeDTOS = searchByLocation(storeSearchDTO);
+
+        if (storeDTOS.isEmpty()) {
+            storeDTOS = getStoresByNeighborhood(neighborhood);
+        }
+
+        if (storeDTOS.isEmpty()) {
+            storeDTOS = getAllStores();
+        }
+        return storeDTOS;
     }
 }
