@@ -40,7 +40,11 @@ public class StoresController {
             @RequestParam(required = false)
                     String neighborhood
     ) throws ExecutionException, InterruptedException {
-        return storesService.searchStore(neighborhood);
+        try {
+            return storesService.searchStore(neighborhood);
+        } catch (Exception e) {
+            return storesService.getAllStores();
+        }
     }
 
     @ApiOperation(value = "get a specific store by ID")
