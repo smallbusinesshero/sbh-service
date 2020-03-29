@@ -2,9 +2,12 @@ package com.diconiumwvv.storesservice.stores;
 
 import com.diconiumwvv.storesservice.geo.GeoService;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDTO;
+import com.diconiumwvv.storesservice.stores.dtos.StoreDraftDTO;
 import com.diconiumwvv.storesservice.stores.dtos.StoreSearchDTO;
 import com.google.maps.model.LatLng;
 import io.sphere.sdk.channels.Channel;
+import io.sphere.sdk.channels.ChannelDraft;
+import io.sphere.sdk.channels.commands.ChannelCreateCommand;
 import io.sphere.sdk.channels.queries.ChannelByIdGet;
 import io.sphere.sdk.channels.queries.ChannelQuery;
 import io.sphere.sdk.channels.queries.ChannelQueryBuilder;
@@ -103,5 +106,11 @@ public class StoresService {
             storeDTOS = getAllStores();
         }
         return storeDTOS;
+    }
+
+    public StoreDTO createStore(StoreDraftDTO storeDraftDTO) throws ExecutionException, InterruptedException {
+        ChannelDraft channelDraft = conversionService.convert(storeDraftDTO, ChannelDraft.class);
+        Channel channel = client.execute(ChannelCreateCommand.of(channelDraft)).toCompletableFuture().get();
+        return conversionService.convert(channel, StoreDTO.class);
     }
 }
