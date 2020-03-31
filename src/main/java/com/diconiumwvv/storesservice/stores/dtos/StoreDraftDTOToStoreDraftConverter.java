@@ -6,6 +6,8 @@ import io.sphere.sdk.types.CustomFieldsDraftBuilder;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public class StoreDraftDTOToStoreDraftConverter implements Converter<StoreDraftDTO, ChannelDraft> {
@@ -19,20 +21,19 @@ public class StoreDraftDTOToStoreDraftConverter implements Converter<StoreDraftD
         Optional.ofNullable(storeDraftDTO.getAddress()).ifPresent(draftBuilder::address);
         Optional.ofNullable(storeDraftDTO.getGeoLocation()).ifPresent(draftBuilder::geoLocation);
 
-        draftBuilder.custom(
-                CustomFieldsDraftBuilder.ofTypeKey("channel-neighborhoods")
-                        .addObjects(new HashMap<String, Object>() {{
-                            Optional.ofNullable(storeDraftDTO.getNeighborhood()).ifPresent(o -> put("neighborhood", o));
-                            Optional.ofNullable(storeDraftDTO.getProfileImageURL()).ifPresent(o -> put("profileImageURL", o));
-                            Optional.ofNullable(storeDraftDTO.getProfileVideoURL()).ifPresent(o -> put("profileVideoURL", o));
-                            Optional.ofNullable(storeDraftDTO.getShopOwnerImage()).ifPresent(o -> put("shopOwnerImage", o));
-                            Optional.ofNullable(storeDraftDTO.getContact()).ifPresent(o -> put("contact", o));
-                            Optional.ofNullable(storeDraftDTO.getShopOwnerName()).ifPresent(o -> put("shopOwnerName", o));
-                            Optional.ofNullable(storeDraftDTO.getPhone()).ifPresent(o -> put("phone", o));
-                            Optional.ofNullable(storeDraftDTO.getEmail()).ifPresent(o -> put("email", o));
-                            Optional.ofNullable(storeDraftDTO.getHomepage()).ifPresent(o -> put("homepage", o));
-                        }}).build()
-        );
+        Map<String, Object> customFields = new HashMap<String, Object>() {{
+                    put("neighborhood", storeDraftDTO.getNeighborhood());
+                    put("profileImageURL", storeDraftDTO.getProfileImageURL());
+                    put("profileVideoURL", storeDraftDTO.getProfileVideoURL());
+                    put("shopOwnerImage", storeDraftDTO.getShopOwnerImage());
+                    put("contact", storeDraftDTO.getContact());
+                    put("shopOwnerName", storeDraftDTO.getShopOwnerName());
+                    put("phone", storeDraftDTO.getPhone());
+                    put("email", storeDraftDTO.getEmail());
+                    put("homepage", storeDraftDTO.getHomepage());
+                }};
+        customFields.values().removeIf(Objects::isNull);
+        draftBuilder.custom(CustomFieldsDraftBuilder.ofTypeKey("channel-neighborhoods").addObjects(customFields).build());
 
         return draftBuilder.build();
     }
