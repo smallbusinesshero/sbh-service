@@ -19,12 +19,12 @@ jobs:
         java-version: 1.8
     - name: Run Maven
       env:
-        google.api.key: "google.api.key"
-        ctp.projectKey: "ctp.projectKey"
-        ctp.clientId: "ctp.clientId"
-        ctp.clientSecret: "ctp.clientSecret"
-        ctp.authUrl: "ctp.authUrl"
-        ctp.apiUrl: "ctp.apiUrl"
+        google.api.key: "1234"
+        ctp.projectKey: "1234"
+        ctp.clientId: "1234"
+        ctp.clientSecret: "1234"
+        ctp.authUrl: "1234"
+        ctp.apiUrl: "1234"
       run: mvn package
 
   analyze:
