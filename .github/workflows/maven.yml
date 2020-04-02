@@ -18,6 +18,13 @@ jobs:
       with:
         java-version: 1.8
     - name: Run Maven
+      env:
+        google.api.key: google.api.key
+        ctp.projectKey: ctp.projectKey
+        ctp.clientId: ctp.clientId
+        ctp.clientSecret: ctp.clientSecret
+        ctp.authUrl: ctp.authUrl
+        ctp.apiUrl: ctp.apiUrl
       run: mvn -B package
 
   analyze:
@@ -31,10 +38,4 @@ jobs:
     - name: Run Sonar analysis
       env: 
         SONAR_API_KEY: ${{ secrets.SONAR_API_KEY }}
-        google.api.key: google.api.key
-        ctp.projectKey: ctp.projectKey
-        ctp.clientId: ctp.clientId
-        ctp.clientSecret: ctp.clientSecret
-        ctp.authUrl: ctp.authUrl
-        ctp.apiUrl: ctp.apiUrl
       run: mvn -B verify sonar:sonar -DskipTests -Dsonar.login=$SONAR_API_KEY -Dsonar.projectName=smallbusinesshero_dds-wvv-backend -Dsonar.branch.name=${GITHUB_REF##*/}
