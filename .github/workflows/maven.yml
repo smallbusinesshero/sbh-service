@@ -44,4 +44,4 @@ jobs:
     - name: Run Sonar analysis
       env: 
         SONAR_API_KEY: ${{ secrets.SONAR_API_KEY }}
-      run: mvn -B verify sonar:sonar -DskipTests -Dsonar.login=$SONAR_API_KEY -Dsonar.projectName=smallbusinesshero_dds-wvv-backend -Dsonar.branch.name=${GITHUB_REF##*/}
+      run: mvn -B verify sonar:sonar -DskipTests -Dsonar.login=$SONAR_API_KEY -Dsonar.projectName=smallbusinesshero_dds-wvv-backend
