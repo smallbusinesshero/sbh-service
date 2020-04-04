@@ -25,8 +25,7 @@ ctp:
   apiUrl: https://run-with-profile-to-use-commerce-tools.de
 
 google:
-  api:
-    key: run-with-profile
+  apikey: run-with-profile
 
 #ctp:
 #  projectKey: ${ctp.projectKey}
