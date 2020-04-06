@@ -18,7 +18,7 @@ public class StoreDTO {
     private String id;
     private LocalizedString name;
     private LocalizedString description;
-    private Address address;
+    private AddressDTO address;
     private List<String> neighborhood;
     private GeoJSON geoLocation;
     private String profileImageURL;
