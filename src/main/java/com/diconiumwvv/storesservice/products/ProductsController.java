@@ -23,7 +23,8 @@ import java.util.stream.Collectors;
         "https://dds-wvv-frontend.herokuapp.com",
         "https://dev-dds-wvv-frontend.herokuapp.com",
         "http://smallbusinesshero.de",
-        "http://www.smallbusinesshero.de"
+        "http://www.smallbusinesshero.de",
+        "https://smallbusinesshero.netlify.app"
 })
 @RestController
 @Api(tags = "Products API")
