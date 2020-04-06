@@ -1,5 +1,7 @@
 package com.diconiumwvv.storesservice.products.dtos;
 
+import io.sphere.sdk.products.Image;
+import io.sphere.sdk.products.attributes.Attribute;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
@@ -10,12 +12,10 @@ import java.util.List;
 @Builder
 public class ProductVariantDTO {
 
-    private String id;
+    private Integer id;
     private String sku;
-    private List<PriceDTO> prices;
-    private List<ImageDTO> images;
-    private List<AttributesDTO> attributes;
-    private List<AssetsDTO> assets;
+    private List<Image> images;
+    private List<Attribute> attributes;
 
     @Tolerate
     public ProductVariantDTO() {
