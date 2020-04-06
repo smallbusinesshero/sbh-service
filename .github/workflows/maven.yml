@@ -25,7 +25,7 @@ jobs:
         ctp.clientSecret: "1234"
         ctp.authUrl: "1234"
         ctp.apiUrl: "1234"
-      run: mvn package
+      run: mvn -B package
 
   analyze:
     runs-on: ubuntu-latest
