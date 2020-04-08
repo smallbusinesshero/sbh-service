@@ -23,7 +23,7 @@ public class AuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
 
     @Override
     public void afterPropertiesSet() {
-        setRealmName("DeveloperStack");
+        setRealmName("SmallBusinessHero");
         super.afterPropertiesSet();
     }
 
