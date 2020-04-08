@@ -27,3 +27,8 @@ ctp:
 google:
   api:
     key: ${google.api.key}
+
+auth:
+  basic:
+    user: ${auth.basic.user}
+    password: ${auth.basic.password}

@@ -40,6 +40,13 @@ ctp:
   clientSecret: ${ctp.clientSecret}
   authUrl: ${ctp.authUrl}
   apiUrl: ${ctp.apiUrl}
+google:
+  api:
+    key: ${google.api.key}
+auth:
+  basic:
+    user: ${auth.basic.user}
+    password: ${auth.basic.password}
 ````
 
 # Build as Docker container
