@@ -32,8 +32,10 @@ jobs:
   
   deploy:
     needs: build
-    if: github.ref == 'develop' || github.ref == 'master'|| github.ref == 'deploy_to_heroku_from_gitlab'
+    #if: github.ref == 'develop' || github.ref == 'master'|| github.ref == 'deploy_to_heroku_from_gitlab'
     runs-on: ubuntu-latest
     steps:
     - name: check if this works
-      run: echo "I triggered"
+      env: 
+        REF: ${{ github.ref }}
+      run: echo $REF
