@@ -39,6 +39,7 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
     - name: Run Sonar analysis
       env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_API_KEY: ${{ secrets.SONAR_API_KEY }}
       run: mvn -B verify sonar:sonar -DskipTests -Dsonar.login=$SONAR_API_KEY -Dsonar.projectName=smallbusinesshero_dds-wvv-backend
 
