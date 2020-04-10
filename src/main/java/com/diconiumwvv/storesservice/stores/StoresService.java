@@ -116,4 +116,60 @@ public class StoresService {
         }
         return storeDTOS;
     }
+    public List<StoreDTO> searchStoreAgain(String neighborhood) throws ExecutionException, InterruptedException {
+        log.info("About to search for stores around {}...", neighborhood);
+
+        if (StringUtils.isBlank(neighborhood)) {
+            log.info("Empty search term, returning all stores.");
+            return getAllStores();
+        }
+
+        StoreSearchDTO storeSearchDTO = new StoreSearchDTO();
+        storeSearchDTO.setAddress(neighborhood);
+        storeSearchDTO.setRadius(5000.0);
+        List<StoreDTO> storeDTOS;
+
+        log.info("Trying to get the place's geolocation, searching for stores around it.");
+        storeDTOS = searchByLocation(storeSearchDTO);
+        log.info("Retrieved {} stores from geolocation search. ", storeDTOS.size());
+
+        if (storeDTOS.isEmpty()) {
+            log.info("Could not find anything using geo location.");
+            storeDTOS = getStoresByNeighborhood(neighborhood);
+        }
+
+        if (storeDTOS.isEmpty()) {
+            log.info("Could not find anything matching the neighborhood exactly, returning all stores.");
+            storeDTOS = getAllStores();
+        }
+        return storeDTOS;
+    }
+    public List<StoreDTO> searchStoreThirdTime(String neighborhood) throws ExecutionException, InterruptedException {
+        log.info("About to search for stores around {}...", neighborhood);
+
+        if (StringUtils.isBlank(neighborhood)) {
+            log.info("Empty search term, returning all stores.");
+            return getAllStores();
+        }
+
+        StoreSearchDTO storeSearchDTO = new StoreSearchDTO();
+        storeSearchDTO.setAddress(neighborhood);
+        storeSearchDTO.setRadius(5000.0);
+        List<StoreDTO> storeDTOS;
+
+        log.info("Trying to get the place's geolocation, searching for stores around it.");
+        storeDTOS = searchByLocation(storeSearchDTO);
+        log.info("Retrieved {} stores from geolocation search. ", storeDTOS.size());
+
+        if (storeDTOS.isEmpty()) {
+            log.info("Could not find anything using geo location.");
+            storeDTOS = getStoresByNeighborhood(neighborhood);
+        }
+
+        if (storeDTOS.isEmpty()) {
+            log.info("Could not find anything matching the neighborhood exactly, returning all stores.");
+            storeDTOS = getAllStores();
+        }
+        return storeDTOS;
+    }
 }
