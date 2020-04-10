@@ -25,5 +25,4 @@ ctp:
   apiUrl: ${ctp.apiUrl}
 
 google:
-  api:
-    key: ${google.api.key}
+  apikey: ${google.api.key}

@@ -20,10 +20,8 @@ jobs:
         java-version: 1.8
     - uses: actions/cache@v1
       with:
-        path: ~/.m2/repository
+        path: ~/.m2/
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
     - name: Run Maven
       run: mvn -B package
 
@@ -37,11 +35,10 @@ jobs:
         java-version: 1.8
     - uses: actions/cache@v1
       with:
-        path: ~/.m2/repository
+        path: ~/.m2/
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
     - name: Run Sonar analysis
       env: 
         SONAR_API_KEY: ${{ secrets.SONAR_API_KEY }}
       run: mvn -B verify sonar:sonar -DskipTests -Dsonar.login=$SONAR_API_KEY -Dsonar.projectName=smallbusinesshero_dds-wvv-backend
+

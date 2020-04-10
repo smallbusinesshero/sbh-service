@@ -18,12 +18,22 @@ swagger:
   showExtensions: false;
 
 ctp:
-  projectKey: ${ctp.projectKey}
-  clientId: ${ctp.clientId}
-  clientSecret: ${ctp.clientSecret}
-  authUrl: ${ctp.authUrl}
-  apiUrl: ${ctp.apiUrl}
+  projectKey: wirvsvirusshop
+  clientId: run-with-profile-to-use-commerce-tools
+  clientSecret: run-with-profile-to-use-commerce-tools
+  authUrl: https://run-with-profile-to-use-commerce-tools.de
+  apiUrl: https://run-with-profile-to-use-commerce-tools.de
 
 google:
-  api:
-    key: ${google.api.key}
+  apikey: run-with-profile
+
+#ctp:
+#  projectKey: ${ctp.projectKey}
+#  clientId: ${ctp.clientId}
+#  clientSecret: ${ctp.clientSecret}
+#  authUrl: ${ctp.authUrl}
+#  apiUrl: ${ctp.apiUrl}
+
+#google:
+#  api:
+#     key: ${google.api.key}
