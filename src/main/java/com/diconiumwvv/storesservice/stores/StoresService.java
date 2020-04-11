@@ -11,16 +11,15 @@ import io.sphere.sdk.channels.queries.ChannelQueryBuilder;
 import io.sphere.sdk.client.BlockingSphereClient;
 import io.sphere.sdk.models.Point;
 import io.sphere.sdk.queries.PagedQueryResult;
+import io.sphere.sdk.types.CustomFields;
 import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -53,9 +52,27 @@ public class StoresService {
                 .collect(Collectors.toList());
     }
 
+    private static boolean isChannelPublished(Channel channel) {
+        if (channel == null) {
+            return false;
+        }
+        CustomFields customFields = channel.getCustom();
+        if (customFields == null) {
+            return false;
+        }
+        Boolean published = customFields.getFieldAsBoolean("published");
+
+        if (published == null) {
+            return false;
+        }
+        return true;
+    }
+
     public List<StoreDTO> getAllStores() throws ExecutionException, InterruptedException {
-        PagedQueryResult<Channel> channelPagedQueryResult1 = client.execute(ChannelQueryBuilder.of().build()).toCompletableFuture().get();
-        return channelPagedQueryResult1.getResults().stream()
+
+        PagedQueryResult<Channel> queryResult = client.execute(ChannelQueryBuilder.of().build()).toCompletableFuture().get();
+        return queryResult.getResults().stream()
+                .filter(StoresService::isChannelPublished)
                 .map(channel -> conversionService.convert(channel, StoreDTO.class))
                 .collect(Collectors.toList());
     }
@@ -74,6 +91,7 @@ public class StoresService {
         List<Channel> results = client.executeBlocking(channelQuery).getResults();
         log.info("Retrieved {} nearby stores from commerce tools.", results.size());
         return results.stream()
+                .filter(StoresService::isChannelPublished)
                 .map(channel -> conversionService.convert(channel, StoreDTO.class))
                 .collect(Collectors.toList());
     }
