@@ -41,3 +41,4 @@ auth:
   basic:
     user: ${auth.basic.user}
     password: ${auth.basic.password}
+
