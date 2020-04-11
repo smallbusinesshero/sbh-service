@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.diconium-wvv</groupId>
     <artifactId>storesservice</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>storesservice</name>
     <description>storesservice</description>
 
@@ -23,7 +23,7 @@
         <swagger.version>2.9.2</swagger.version>
         <swagger-annotations.version>1.5.21</swagger-annotations.version>
         <swagger-models.version>1.5.21</swagger-models.version>
-        <ctp.sdk.version>1.50.0</ctp.sdk.version>
+        <ctp.sdk.version>1.51.0</ctp.sdk.version>
         <netty-all>4.1.48.Final</netty-all>
         <google-maps-services>0.11.0</google-maps-services>
         <sonar.projectKey>smallbusinesshero_dds-wvv-backend</sonar.projectKey>
