@@ -59,7 +59,10 @@ public class StoresService {
         }
         Boolean published = customFields.getFieldAsBoolean("published");
 
-        return published != null && published;
+        if (published == null) {
+            return false;
+        }
+        return true;
     }
 
     public List<StoreDTO> getAllStores() throws ExecutionException, InterruptedException {
