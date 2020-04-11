@@ -21,17 +21,17 @@ public class StoreDraftDTOToStoreDraftConverter implements Converter<StoreDraftD
         Optional.ofNullable(storeDraftDTO.getAddress()).ifPresent(draftBuilder::address);
         Optional.ofNullable(storeDraftDTO.getGeoLocation()).ifPresent(draftBuilder::geoLocation);
 
-        Map<String, Object> customFields = new HashMap<String, Object>() {{
-                    put("neighborhood", storeDraftDTO.getNeighborhood());
-                    put("profileImageURL", storeDraftDTO.getProfileImageURL());
-                    put("profileVideoURL", storeDraftDTO.getProfileVideoURL());
-                    put("shopOwnerImage", storeDraftDTO.getShopOwnerImage());
-                    put("contact", storeDraftDTO.getContact());
-                    put("shopOwnerName", storeDraftDTO.getShopOwnerName());
-                    put("phone", storeDraftDTO.getPhone());
-                    put("email", storeDraftDTO.getEmail());
-                    put("homepage", storeDraftDTO.getHomepage());
-                }};
+        Map<String, Object> customFields = new HashMap<>();
+        customFields.put("neighborhood", storeDraftDTO.getNeighborhood());
+        customFields.put("profileImageURL", storeDraftDTO.getProfileImageURL());
+        customFields.put("profileVideoURL", storeDraftDTO.getProfileVideoURL());
+        customFields.put("shopOwnerImage", storeDraftDTO.getShopOwnerImage());
+        customFields.put("contact", storeDraftDTO.getContact());
+        customFields.put("shopOwnerName", storeDraftDTO.getShopOwnerName());
+        customFields.put("phone", storeDraftDTO.getPhone());
+        customFields.put("email", storeDraftDTO.getEmail());
+        customFields.put("homepage", storeDraftDTO.getHomepage());
+
         customFields.values().removeIf(Objects::isNull);
         draftBuilder.custom(CustomFieldsDraftBuilder.ofTypeKey("channel-neighborhoods").addObjects(customFields).build());
 
