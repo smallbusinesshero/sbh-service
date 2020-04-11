@@ -1,13 +1,20 @@
 package com.diconiumwvv.storesservice;
 
-import org.junit.jupiter.api.Test;
+import com.diconiumwvv.storesservice.stores.StoresController;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class StoresserviceApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+    @Autowired
+    private StoresController storesController;
 
+    @Test
+    public void contextLoads() {
+        assertThat(storesController).isNotNull();
+    }
 }

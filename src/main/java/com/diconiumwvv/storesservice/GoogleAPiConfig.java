@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class GoogleAPiConfig {
 
     @Bean
-    public GeoApiContext geoApiContext (@Value("${google.api.key}") String apiKey) {
+    public GeoApiContext geoApiContext (@Value("${google.apiKey}") String apiKey) {
         return new GeoApiContext.Builder()
                 .apiKey(apiKey)
                 .build();

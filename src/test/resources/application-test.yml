@@ -2,9 +2,9 @@
 api:
   version: 1.0
 
-swagger:  
+swagger:
   enabled: true
-  title: stores API
+  title: PROD - Stores API
   description: API to find a store nearby.
   useDefaultResponseMessages: false
   enableUrlTemplating: false
@@ -25,19 +25,9 @@ ctp:
   apiUrl: https://run-with-profile-to-use-commerce-tools.de
 
 google:
-  apiKey: run-with-profile
-
-#ctp:
-#  projectKey: ${ctp.projectKey}
-#  clientId: ${ctp.clientId}
-#  clientSecret: ${ctp.clientSecret}
-#  authUrl: ${ctp.authUrl}
-#  apiUrl: ${ctp.apiUrl}
-
-#google:
-#  apiKey: ${google.apiKey}
+  apiKey: asdfghjk
 
 auth:
   basic:
-    user: ${auth.basic.user}
-    password: ${auth.basic.password}
+    user: asdfjkl
+    password: kjhgfdasdf

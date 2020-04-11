@@ -14,6 +14,7 @@ import io.sphere.sdk.channels.queries.ChannelQueryBuilder;
 import io.sphere.sdk.client.BlockingSphereClient;
 import io.sphere.sdk.models.Point;
 import io.sphere.sdk.queries.PagedQueryResult;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class StoresService {
     @Resource
@@ -109,6 +111,7 @@ public class StoresService {
     }
 
     public StoreDTO createStore(StoreDraftDTO storeDraftDTO) throws ExecutionException, InterruptedException {
+        log.info("About to create new store {}...", storeDraftDTO.getName());
         ChannelDraft channelDraft = conversionService.convert(storeDraftDTO, ChannelDraft.class);
         Channel channel = client.execute(ChannelCreateCommand.of(channelDraft)).toCompletableFuture().get();
         return conversionService.convert(channel, StoreDTO.class);
