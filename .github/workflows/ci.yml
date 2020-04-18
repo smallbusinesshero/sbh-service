@@ -25,4 +25,4 @@ jobs:
       env: 
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_API_KEY: ${{ secrets.SONAR_API_KEY }}
-      run: mvn -B sonar:sonar -Dsonar.login=$SONAR_API_KEY 
+      run: mvn -B -X sonar:sonar -Dsonar.login=$SONAR_API_KEY 
