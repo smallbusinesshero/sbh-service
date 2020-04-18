@@ -143,7 +143,6 @@
                 <artifactId>maven-surefire-report-plugin</artifactId>
                 <version>${surefire.version}</version>
             </plugin>
-            <!--
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -169,7 +168,7 @@
                         </goals>
                         <configuration>
                             <rules>
-                                <rule>
+                                <!--rule>
                                     <element>BUNDLE</element>
                                     <limits>
                                         <limit>
@@ -178,12 +177,12 @@
                                             <minimum>0.80</minimum>
                                         </limit>
                                     </limits>
-                                </rule>
+                                </rule-->
                             </rules>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin> -->
+            </plugin>
         </plugins>
     </build>
 </project>
