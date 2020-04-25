@@ -1,6 +1,7 @@
 package com.diconiumwvv.storesservice.stores;
 
 import com.diconiumwvv.storesservice.stores.dtos.StoreDTO;
+import com.diconiumwvv.storesservice.stores.dtos.StoreDraftDTO;
 import com.diconiumwvv.storesservice.stores.dtos.StoreSearchDTO;
 import io.sphere.sdk.channels.Channel;
 import io.swagger.annotations.*;
@@ -57,5 +58,18 @@ public class StoresController {
     public StoreDTO getStoreById(@ApiParam(value = "id", example = "ddf24dc6-1a2d-4391-8f34-c5c322b21c1e") @PathVariable String id) throws ExecutionException, InterruptedException {
         Channel storeForID = storesService.getStoreForID(id);
         return conversionService.convert(storeForID, StoreDTO.class);
+    }
+
+    @ApiOperation(value = "Create Store")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "ok"),
+            @ApiResponse(code = 500, message = "An unexpected error occurred")
+    })
+    @PostMapping(value = "/stores/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public StoreDTO createStore(
+            @ApiParam(value="storeDraftDTO")
+            @RequestBody StoreDraftDTO storeDraftDTO
+    ) throws ExecutionException, InterruptedException {
+        return storesService.createStore(storeDraftDTO);
     }
 }

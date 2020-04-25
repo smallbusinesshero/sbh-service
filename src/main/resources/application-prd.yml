@@ -25,5 +25,9 @@ ctp:
   apiUrl: ${ctp.apiUrl}
 
 google:
-  api:
-    key: ${google.api.key}
+  apiKey: ${google.apiKey}
+
+auth:
+  basic:
+    user: ${auth.basic.user}
+    password: ${auth.basic.password}

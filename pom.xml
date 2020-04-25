@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.diconium-wvv</groupId>
     <artifactId>storesservice</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>storesservice</name>
     <description>storesservice</description>
 
@@ -23,7 +23,7 @@
         <swagger.version>2.9.2</swagger.version>
         <swagger-annotations.version>1.5.21</swagger-annotations.version>
         <swagger-models.version>1.5.21</swagger-models.version>
-        <ctp.sdk.version>1.50.0</ctp.sdk.version>
+        <ctp.sdk.version>1.51.0</ctp.sdk.version>
         <netty-all>4.1.48.Final</netty-all>
         <google-maps-services>0.11.0</google-maps-services>
         <sonar.projectKey>smallbusinesshero_dds-wvv-backend</sonar.projectKey>
@@ -36,6 +36,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -139,47 +143,25 @@
                 <artifactId>maven-surefire-report-plugin</artifactId>
                 <version>${surefire.version}</version>
             </plugin>
-            <!--
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco-maven-plugin}</version>
                 <executions>
                     <execution>
-                        <id>coverage-initialize</id>
+                        <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>coverage-report</id>
-                        <phase>post-integration-test</phase>
+                        <id>report</id>
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>coverage-check</id>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <rule>
-                                    <element>BUNDLE</element>
-                                    <limits>
-                                        <limit>
-                                            <counter>INSTRUCTION</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.80</minimum>
-                                        </limit>
-                                    </limits>
-                                </rule>
-                            </rules>
-                        </configuration>
-                    </execution>
                 </executions>
-            </plugin> -->
+            </plugin>
         </plugins>
     </build>
 </project>
