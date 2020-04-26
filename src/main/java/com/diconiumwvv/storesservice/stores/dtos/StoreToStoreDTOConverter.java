@@ -22,6 +22,16 @@ public class StoreToStoreDTOConverter implements Converter<Channel, StoreDTO> {
     public static final String PHONE = "phone";
     public static final String EMAIL = "email";
     public static final String HOMEPAGE = "homepage";
+    public static final String SHOP_CATEGORY = "shopCategory";
+    public static final String CONTACT_WHATSAPP = "contactWhatsapp";
+    public static final String CONTACT_INSTAGRAM = "contactInstagram";
+    public static final String CONTACT_FACEBOOK = "contactFacebook";
+    public static final String CONTACT_FACETIME = "contactFacetime";
+    public static final String CONTACT_SKYPE = "contactSkype";
+    public static final String CONTACT_TWITTER = "contactTwitter";
+    public static final String HAS_DELIVERY = "hasDelivery";
+    public static final String HAS_PICKUP = "hasPickup";
+    public static final String HAS_SHIPPING = "hasShipping";
 
     private AddressDTO convertAddress(Address address) {
         if (address == null) {
@@ -69,6 +79,26 @@ public class StoreToStoreDTOConverter implements Converter<Channel, StoreDTO> {
             builder.email(email);
             String homepage = customFields.getFieldAsString(HOMEPAGE);
             builder.homepage(homepage);
+            String shopCategory = customFields.getFieldAsString(SHOP_CATEGORY);
+            builder.shopCategory(shopCategory);
+            String contactWhatsapp = customFields.getFieldAsString(CONTACT_WHATSAPP);
+            builder.contactWhatsapp(contactWhatsapp);
+            String contactInstagram = customFields.getFieldAsString(CONTACT_INSTAGRAM);
+            builder.contactInstagram(contactInstagram);
+            String contactFacebook = customFields.getFieldAsString(CONTACT_FACEBOOK);
+            builder.contactFacebook(contactFacebook);
+            String contactFacetime = customFields.getFieldAsString(CONTACT_FACETIME);
+            builder.contactFacetime(contactFacetime);
+            String contactSkype = customFields.getFieldAsString(CONTACT_SKYPE);
+            builder.contactSkype(contactSkype);
+            String contactTwitter = customFields.getFieldAsString(CONTACT_TWITTER);
+            builder.contactTwitter(contactTwitter);
+            Boolean hasDelivery = customFields.getFieldAsBoolean(HAS_DELIVERY);
+            builder.hasDelivery(hasDelivery);
+            Boolean hasPickup = customFields.getFieldAsBoolean(HAS_PICKUP);
+            builder.hasPickup(hasPickup);
+            Boolean hasShipping = customFields.getFieldAsBoolean(HAS_SHIPPING);
+            builder.hasShipping(hasShipping);
         });
 
         return builder.build();
