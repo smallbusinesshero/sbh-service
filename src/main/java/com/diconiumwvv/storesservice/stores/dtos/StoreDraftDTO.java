@@ -26,4 +26,19 @@ public class StoreDraftDTO {
     private String phone;
     private String email;
     private String homepage;
+    private String shopCategory;
+    private String contactWhatsapp;
+    private String contactInstagram;
+    private String contactFacebook;
+    private String contactFacetime;
+    private String contactSkype;
+    private String contactTwitter;
+    private Boolean hasDelivery;
+    private Boolean hasPickup;
+    private Boolean hasShipping;
+
+    //internal contact data
+    private String ownerPhone;
+    private String ownerEmail;
+
 }

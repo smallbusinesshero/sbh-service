@@ -31,6 +31,18 @@ public class StoreDraftDTOToStoreDraftConverter implements Converter<StoreDraftD
         customFields.put("phone", storeDraftDTO.getPhone());
         customFields.put("email", storeDraftDTO.getEmail());
         customFields.put("homepage", storeDraftDTO.getHomepage());
+        customFields.put("shopCategory", storeDraftDTO.getShopCategory());
+        customFields.put("contactWhatsapp", storeDraftDTO.getContactWhatsapp());
+        customFields.put("contactInstagram", storeDraftDTO.getContactInstagram());
+        customFields.put("contactFacebook", storeDraftDTO.getContactFacebook());
+        customFields.put("contactFacetime", storeDraftDTO.getContactFacetime());
+        customFields.put("contactSkype", storeDraftDTO.getContactSkype());
+        customFields.put("contactTwitter", storeDraftDTO.getContactTwitter());
+        customFields.put("hasDelivery", storeDraftDTO.getHasDelivery());
+        customFields.put("hasPickup", storeDraftDTO.getHasPickup());
+        customFields.put("hasShipping", storeDraftDTO.getHasShipping());
+        customFields.put("ownerPhone", storeDraftDTO.getOwnerPhone());
+        customFields.put("ownerEmail", storeDraftDTO.getOwnerEmail());
 
         customFields.values().removeIf(Objects::isNull);
         draftBuilder.custom(CustomFieldsDraftBuilder.ofTypeKey("channel-neighborhoods").addObjects(customFields).build());
