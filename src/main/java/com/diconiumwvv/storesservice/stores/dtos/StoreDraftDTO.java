@@ -1,6 +1,5 @@
 package com.diconiumwvv.storesservice.stores.dtos;
 
-import io.sphere.sdk.models.Address;
 import io.sphere.sdk.models.GeoJSON;
 import io.sphere.sdk.models.LocalizedString;
 import lombok.Data;
@@ -13,7 +12,7 @@ public class StoreDraftDTO {
     private String key;
     private LocalizedString name;
     private LocalizedString description;
-    private Address address;
+    private AddressDTO address;
     private GeoJSON geoLocation;
 
     // customs
@@ -40,5 +39,5 @@ public class StoreDraftDTO {
     //internal contact data
     private String ownerPhone;
     private String ownerEmail;
-
+    private Integer numberOfEmployees;
 }

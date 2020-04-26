@@ -1,7 +1,9 @@
 package com.diconiumwvv.storesservice.stores.dtos;
 
+import com.neovisionaries.i18n.CountryCode;
 import io.sphere.sdk.channels.ChannelDraft;
 import io.sphere.sdk.channels.ChannelDraftBuilder;
+import io.sphere.sdk.models.AddressBuilder;
 import io.sphere.sdk.types.CustomFieldsDraftBuilder;
 import org.springframework.core.convert.converter.Converter;
 
@@ -18,8 +20,19 @@ public class StoreDraftDTOToStoreDraftConverter implements Converter<StoreDraftD
 
         Optional.ofNullable(storeDraftDTO.getName()).ifPresent(draftBuilder::name);
         Optional.ofNullable(storeDraftDTO.getDescription()).ifPresent(draftBuilder::description);
-        Optional.ofNullable(storeDraftDTO.getAddress()).ifPresent(draftBuilder::address);
         Optional.ofNullable(storeDraftDTO.getGeoLocation()).ifPresent(draftBuilder::geoLocation);
+
+        Optional.ofNullable(storeDraftDTO.getAddress()).ifPresent(addressDTO -> draftBuilder.address(
+                AddressBuilder.of(CountryCode.DE)
+                        .streetName(addressDTO.getStreetName())
+                        .streetNumber(addressDTO.getStreetNumber())
+                        .postalCode(addressDTO.getPostalCode())
+                        .city(addressDTO.getCity())
+                        .region(addressDTO.getRegion())
+                        .state(addressDTO.getState())
+                        .build()
+        ));
+
 
         Map<String, Object> customFields = new HashMap<>();
         customFields.put("neighborhood", storeDraftDTO.getNeighborhood());
@@ -42,7 +55,7 @@ public class StoreDraftDTOToStoreDraftConverter implements Converter<StoreDraftD
         customFields.put("hasPickup", storeDraftDTO.getHasPickup());
         customFields.put("hasShipping", storeDraftDTO.getHasShipping());
         customFields.put("ownerPhone", storeDraftDTO.getOwnerPhone());
-        customFields.put("ownerEmail", storeDraftDTO.getOwnerEmail());
+        customFields.put("numberOfEmployees", storeDraftDTO.getNumberOfEmployees());
 
         customFields.values().removeIf(Objects::isNull);
         draftBuilder.custom(CustomFieldsDraftBuilder.ofTypeKey("channel-neighborhoods").addObjects(customFields).build());
