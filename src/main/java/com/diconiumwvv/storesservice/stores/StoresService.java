@@ -1,10 +1,9 @@
 package com.diconiumwvv.storesservice.stores;
 
+import com.diconiumwvv.storesservice.exceptions.SbhException;
 import com.diconiumwvv.storesservice.geo.GeoService;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDTO;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDraftDTO;
-import com.diconiumwvv.storesservice.stores.dtos.StoreSearchDTO;
-import com.google.maps.model.LatLng;
 import io.sphere.sdk.channels.Channel;
 import io.sphere.sdk.channels.ChannelDraft;
 import io.sphere.sdk.channels.commands.ChannelCreateCommand;
@@ -15,14 +14,16 @@ import io.sphere.sdk.client.BlockingSphereClient;
 import io.sphere.sdk.models.Point;
 import io.sphere.sdk.queries.PagedQueryResult;
 import io.sphere.sdk.types.CustomFields;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -40,12 +41,15 @@ public class StoresService {
     private GeoService geoService;
 
     public Channel getStoreForID(String channelId) throws ExecutionException, InterruptedException {
-        CompletionStage<Channel> future = client.execute(ChannelByIdGet.of(channelId));
+        CompletionStage<Channel> future = commerceToolsClient.execute(ChannelByIdGet.of(channelId));
         return future.toCompletableFuture().get();
     }
 
-    public List<StoreDTO> getStoresByNeighborhood(String neighborhood) throws ExecutionException, InterruptedException {
-        PagedQueryResult<Channel> channelPagedQueryResult1 = client.execute(ChannelQueryBuilder.of().build()).toCompletableFuture().get();
+    public List<StoreDTO> getStoresByNeighborhood(String neighborhood)
+        throws ExecutionException, InterruptedException {
+        PagedQueryResult<Channel> channelPagedQueryResult1 =
+            commerceToolsClient.execute(ChannelQueryBuilder.of().build()).toCompletableFuture()
+                .get();
 
         return channelPagedQueryResult1.getResults().stream()
                 .map(channel -> conversionService.convert(channel, StoreDTO.class))
@@ -64,20 +68,17 @@ public class StoresService {
             return false;
         }
         Boolean published = customFields.getFieldAsBoolean("published");
-
-        if (published == null) {
-            return false;
-        }
-        return true;
+        return published != null;
     }
 
     public List<StoreDTO> getAllStores() throws ExecutionException, InterruptedException {
 
-        PagedQueryResult<Channel> queryResult = client.execute(ChannelQueryBuilder.of().build()).toCompletableFuture().get();
-        return queryResult.getResults().stream()
-                .filter(StoresService::isChannelPublished)
-                .map(channel -> conversionService.convert(channel, StoreDTO.class))
-                .collect(Collectors.toList());
+        PagedQueryResult<Channel> queryResult =
+            commerceToolsClient.execute(ChannelQueryBuilder.of().build()).toCompletableFuture()
+                .get();
+        return queryResult.getResults().stream().filter(StoresService::isChannelPublished)
+            .map(channel -> conversionService.convert(channel, StoreDTO.class))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -86,62 +87,110 @@ public class StoresService {
      * @param radius radius in meters
      * @return List of stores within the given radius around the geolocation
      */
-    public List<StoreDTO> searchStoreByLatLng(double longitude, double latitude, double radius) {
+    @NonNull public List<StoreDTO> retrieveNearbyStoresFromCommerceTools(double longitude,
+        double latitude, double radius) {
         log.info("Searching commerce tools for stores around {}, {}...", latitude, longitude);
-        Point point = Point.of(longitude, latitude);
-        // Radius in meter
-        ChannelQuery channelQuery = ChannelQuery.of().withPredicates(m -> m.geoLocation().withinCircle(point, radius));
-        List<Channel> results = client.executeBlocking(channelQuery).getResults();
+        List<Channel> results = getChannelsWithinMetersRadius(longitude, latitude, radius);
+        if (null == results || results.isEmpty()) {
+            log.info("No nearby stores found.");
+            return Collections.emptyList();
+        }
         log.info("Retrieved {} nearby stores from commerce tools.", results.size());
-        return results.stream()
-                .filter(StoresService::isChannelPublished)
+        List<StoreDTO> listOfStores =
+            results.stream().filter(Objects::nonNull).filter(StoresService::isChannelPublished)
                 .map(channel -> conversionService.convert(channel, StoreDTO.class))
                 .collect(Collectors.toList());
+        if (listOfStores.isEmpty()) {
+            log.info("No published stores found nearby.");
+        }
+        return listOfStores;
     }
 
-    private List<StoreDTO> searchByLocation(StoreSearchDTO storeSearchDTO) {
-        return Arrays.stream(geoService.geocode(storeSearchDTO.getAddress()))
-                .findFirst()
-                .map(geocodingResult -> {
-                    log.info("Picking the first geocoding result from GoogleAPI.");
-                    LatLng location = geocodingResult.geometry.location;
-                    return searchStoreByLatLng(location.lng, location.lat, storeSearchDTO.getRadius());
-                }).orElse(Collections.emptyList());
+    private List<StoreDTO> searchStoresNearby(String searchTerm, double radius)
+        throws InterruptedException, SbhException {
+        final Point location = geoService.retrieveGeoLocation(searchTerm);
+        return retrieveNearbyStoresFromCommerceTools(location.getLongitude(),
+            location.getLatitude(), radius);
+    }
+
+    private List<Channel> getChannelsWithinMetersRadius(double longitude, double latitude, double radius) {
+        Point point = Point.of(longitude, latitude);
+        ChannelQuery channelQuery =
+            ChannelQuery.of().withPredicates(m -> m.geoLocation().withinCircle(point, radius));
+        return commerceToolsClient.executeBlocking(channelQuery).getResults();
     }
 
     public List<StoreDTO> searchStore(String neighborhood) throws ExecutionException, InterruptedException {
         log.info("About to search for stores around {}...", neighborhood);
 
-        if (StringUtils.isBlank(neighborhood)) {
+        if (StringUtils.isBlank(searchTerm)) {
             log.info("Empty search term, returning all stores.");
             return getAllStores();
         }
 
-        StoreSearchDTO storeSearchDTO = new StoreSearchDTO();
-        storeSearchDTO.setAddress(neighborhood);
-        storeSearchDTO.setRadius(5000.0);
-        List<StoreDTO> storeDTOS;
+        List<StoreDTO> storesSearchResult = Collections.emptyList();
 
         log.info("Trying to get the place's geolocation, searching for stores around it.");
-        storeDTOS = searchByLocation(storeSearchDTO);
-        log.info("Retrieved {} stores from geolocation search. ", storeDTOS.size());
-
-        if (storeDTOS.isEmpty()) {
-            log.info("Could not find anything using geo location.");
-            storeDTOS = getStoresByNeighborhood(neighborhood);
+        try {
+            storesSearchResult = searchStoresNearby(searchTerm, RADIUS);
+        } catch (SbhException e) {
+            log.error("Could not retrieve stores from geolocation search.", e);
         }
 
-        if (storeDTOS.isEmpty()) {
-            log.info("Could not find anything matching the neighborhood exactly, returning all stores.");
-            storeDTOS = getAllStores();
+        if (storesSearchResult.isEmpty()) {
+            storesSearchResult = getStoresByNeighborhood(searchTerm);
         }
-        return storeDTOS;
+
+        if (storesSearchResult.isEmpty()) {
+            log.info(
+                "Could not find anything matching the neighborhood exactly, returning all stores.");
+            storesSearchResult = getAllStores();
+        }
+        return storesSearchResult;
     }
 
-    public StoreDTO createStore(StoreDraftDTO storeDraftDTO) throws ExecutionException, InterruptedException {
-        log.info("About to create new store {}...", storeDraftDTO.getName());
-        ChannelDraft channelDraft = conversionService.convert(storeDraftDTO, ChannelDraft.class);
-        Channel channel = client.execute(ChannelCreateCommand.of(channelDraft)).toCompletableFuture().get();
+    public StoreDTO createStore(final StoreDraftDTO newStore)
+        throws ExecutionException, InterruptedException, SbhException {
+        log.info("About to create new store {}...", newStore.getName());
+        StoreDraftDTO newStoreWithGeoLocation;
+        if (null == newStore.getGeoLocation()) {
+            newStoreWithGeoLocation = enrichStoreWithGeoLocation(newStore);
+        } else {
+            newStoreWithGeoLocation = newStore;
+        }
+        ChannelDraft channelDraft =
+            conversionService.convert(newStoreWithGeoLocation, ChannelDraft.class);
+        if (null == channelDraft) {
+            throw new SbhException("Channel draft could not be converted.");
+        }
+        Channel channel =
+            commerceToolsClient.execute(ChannelCreateCommand.of(channelDraft)).toCompletableFuture()
+                .get();
         return conversionService.convert(channel, StoreDTO.class);
+    }
+
+    private StoreDraftDTO enrichStoreWithGeoLocation(final StoreDraftDTO newStore)
+        throws InterruptedException {
+        if (null == newStore || null == newStore.getAddress() || null == newStore.getAddress()
+                .getStreetName() || null == newStore.getAddress().getStreetNumber() || null == newStore
+                .getAddress().getPostalCode() || null == newStore.getAddress().getCity()) {
+                log.warn("Address was incomplete, cannot detect geolocation. Please add it manually.");
+        } else {
+            final String streetName = newStore.getAddress().getStreetName();
+            final String streetNumber = newStore.getAddress().getStreetNumber();
+            final String postalCode = newStore.getAddress().getPostalCode();
+            final String city = newStore.getAddress().getCity();
+            final String address = String
+                .format("%s %s, %s %s, Deutschland", streetName, streetNumber, postalCode, city);
+            final Point geolocation;
+            try {
+                geolocation = geoService.retrieveGeoLocation(address);
+                newStore.setGeoLocation(geolocation);
+            } catch (SbhException e) {
+                log.warn(String.format(
+                    "Could not retrieve geolocation for %s, please add it manually.", address), e);
+            }
+        }
+        return newStore;
     }
 }
