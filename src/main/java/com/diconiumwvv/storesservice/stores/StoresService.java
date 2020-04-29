@@ -28,17 +28,13 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-@Slf4j
-@Service
-public class StoresService {
-    @Resource
-    private BlockingSphereClient client;
+@Slf4j @Service public class StoresService {
+    public static final int RADIUS = 5000;
+    @Resource private BlockingSphereClient commerceToolsClient;
 
-    @Resource
-    private ConversionService conversionService;
+    @Resource private ConversionService conversionService;
 
-    @Resource
-    private GeoService geoService;
+    @Resource private GeoService geoService;
 
     public Channel getStoreForID(String channelId) throws ExecutionException, InterruptedException {
         CompletionStage<Channel> future = commerceToolsClient.execute(ChannelByIdGet.of(channelId));
@@ -52,11 +48,10 @@ public class StoresService {
                 .get();
 
         return channelPagedQueryResult1.getResults().stream()
-                .map(channel -> conversionService.convert(channel, StoreDTO.class))
-                .filter(Objects::nonNull)
-                .filter(store -> store.getNeighborhood() != null)
-                .filter(store -> store.getNeighborhood().contains(neighborhood))
-                .collect(Collectors.toList());
+            .map(channel -> conversionService.convert(channel, StoreDTO.class))
+            .filter(Objects::nonNull).filter(store -> store.getNeighborhood() != null)
+            .filter(store -> store.getNeighborhood().contains(neighborhood))
+            .collect(Collectors.toList());
     }
 
     private static boolean isChannelPublished(Channel channel) {
@@ -83,8 +78,8 @@ public class StoresService {
 
     /**
      * @param longitude the address' longitude
-     * @param latitude the address' latitude
-     * @param radius radius in meters
+     * @param latitude  the address' latitude
+     * @param radius    radius in meters
      * @return List of stores within the given radius around the geolocation
      */
     @NonNull public List<StoreDTO> retrieveNearbyStoresFromCommerceTools(double longitude,
@@ -120,8 +115,9 @@ public class StoresService {
         return commerceToolsClient.executeBlocking(channelQuery).getResults();
     }
 
-    public List<StoreDTO> searchStore(String neighborhood) throws ExecutionException, InterruptedException {
-        log.info("About to search for stores around {}...", neighborhood);
+    public List<StoreDTO> searchStore(String searchTerm)
+        throws ExecutionException, InterruptedException {
+        log.info("About to search for stores around {}...", searchTerm);
 
         if (StringUtils.isBlank(searchTerm)) {
             log.info("Empty search term, returning all stores.");
