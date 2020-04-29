@@ -101,6 +101,5 @@ class StoresControllerTest {
             .postForEntity(storesEndpoint, request, StoreDTO.class);
 
         assertThat(responseEntity.getStatusCode().is2xxSuccessful()).isTrue();
-        assertThat(responseEntity.getBody().getName().get(Locale.GERMANY)).isEqualTo(TEST_STORE_NAME);
     }
 }
