@@ -1,8 +1,10 @@
 package com.diconiumwvv.storesservice.stores;
 
+import com.diconiumwvv.storesservice.exceptions.SbhException;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDTO;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDraftDTO;
 import io.sphere.sdk.models.LocalizedString;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +28,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+@Slf4j
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class StoresControllerTest {
 
     @LocalServerPort private int port;
-    final private String storesEndpoint = "/stores/";
+    private final String storesEndpoint = "/stores/";
     @Value("${auth.basic.user}") private String username;
     @Value("${auth.basic.password}") private String password;
 
-    private static final String wrongPassword = "xxxxxxxx";
+    private static final String WRONG_PASSWORD = "xxxxxxxx";
     public static final String TEST_STORE_NAME = "Silber";
     public static final LocalizedString LOCALIZED_STORE_NAME =
         LocalizedString.of(Locale.GERMANY, TEST_STORE_NAME);
@@ -55,14 +58,15 @@ class StoresControllerTest {
     @BeforeEach void setUp() {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        setUpMockStores();
+        stores = setUpMockStores();
     }
 
-    private void setUpMockStores() {
-        store = new StoreDTO();
+    private List<StoreDTO> setUpMockStores() {
+        final StoreDTO store = new StoreDTO();
         store.setName(LOCALIZED_STORE_NAME);
-        stores = new ArrayList<>();
+        List<StoreDTO> stores = new ArrayList<>();
         stores.add(store);
+        return stores;
     }
 
     @Test void getStores() throws ExecutionException, InterruptedException {
@@ -81,11 +85,11 @@ class StoresControllerTest {
 
     @Test void wrongCredentials() {
         assertThrows(RestClientException.class, () -> restTemplate
-            .withBasicAuth(username, wrongPassword)
+            .withBasicAuth(username, WRONG_PASSWORD)
             .getForEntity(storesEndpoint, StoreDTO.class));
     }
 
-    @Test void createStore() throws ExecutionException, InterruptedException {
+    @Test void createStore() throws ExecutionException, InterruptedException, SbhException {
         given(storesService.createStore(any())).willReturn(store);
 
         StoreDraftDTO storeDraft = new StoreDraftDTO();
