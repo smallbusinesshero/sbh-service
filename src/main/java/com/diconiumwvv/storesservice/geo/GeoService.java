@@ -1,31 +1,51 @@
 package com.diconiumwvv.storesservice.geo;
 
+import com.diconiumwvv.storesservice.exceptions.SbhException;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
+import com.google.maps.errors.ApiException;
 import com.google.maps.model.GeocodingResult;
-import javax.annotation.Resource;
+import com.google.maps.model.LatLng;
+import io.sphere.sdk.models.Point;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Locale;
 
 @Slf4j
 @Service
 public class GeoService {
 
-    @Resource
     private GeoApiContext geoApiContext;
 
-    public GeocodingResult[] geocode(String address) {
-        log.info("About to retrieve address information from GoogleAPI.");
-        GeocodingResult[] results = new GeocodingResult[0];
+    public GeoService(GeoApiContext geoApiContext) {
+        this.geoApiContext = geoApiContext;
+    }
+
+    public Point retrieveGeoLocation(String searchTerm)
+        throws InterruptedException, SbhException {
+        log.info("About to retrieve address information from GoogleMaps API...");
+        GeocodingResult[] geoCodes = retrieveGeocodingResultForDefaultLocale(searchTerm);
+        log.debug("Result from GoogleMaps API for {}: {}", searchTerm, Arrays.toString(geoCodes));
+        LatLng latLng = getFirstGeoLocation(geoCodes);
+        return Point.of(latLng.lng, latLng.lat);
+    }
+
+    private GeocodingResult[] retrieveGeocodingResultForDefaultLocale(String searchTerm)
+        throws InterruptedException, SbhException {
         try {
-            results = GeocodingApi.geocode(geoApiContext, address).
-                language("de").
-                region("DE").
+            return GeocodingApi.geocode(geoApiContext, searchTerm).
+                language(Locale.getDefault().getLanguage()).
+                region(Locale.getDefault().getCountry()).
                 await();
-        } catch (Exception e) {
-            log.error("Could not retrieve information from GoogleAPI because "
-                + "of an error, returning empty result list: ", e);
+        } catch (ApiException | IOException e) {
+            throw new SbhException("Could not connect to GoogleMaps API.", e);
         }
-        return results;
+    }
+
+    private LatLng getFirstGeoLocation(GeocodingResult[] geoCodes) {
+        return geoCodes[0].geometry.location;
     }
 }

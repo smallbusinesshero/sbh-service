@@ -1,11 +1,10 @@
 package com.diconiumwvv.storesservice.stores;
 
+import com.diconiumwvv.storesservice.exceptions.SbhException;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDTO;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDraftDTO;
-import com.diconiumwvv.storesservice.stores.dtos.StoreSearchDTO;
 import io.sphere.sdk.channels.Channel;
 import io.swagger.annotations.*;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -69,7 +68,7 @@ public class StoresController {
     public StoreDTO createStore(
             @ApiParam(value="storeDraftDTO")
             @RequestBody StoreDraftDTO storeDraftDTO
-    ) throws ExecutionException, InterruptedException {
+    ) throws ExecutionException, InterruptedException, SbhException {
         return storesService.createStore(storeDraftDTO);
     }
 }
