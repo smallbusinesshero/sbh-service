@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
         "http://localhost:3000",
         "https://dds-wvv-frontend.herokuapp.com",
         "https://dev-dds-wvv-frontend.herokuapp.com",
+        "https://feature-storefront.herokuapp.com",
         "http://smallbusinesshero.de",
         "http://www.smallbusinesshero.de"
 })
