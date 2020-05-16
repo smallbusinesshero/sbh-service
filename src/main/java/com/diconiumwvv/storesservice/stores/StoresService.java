@@ -147,7 +147,7 @@ import java.util.stream.Collectors;
 
     public StoreDTO createStore(final StoreDraftDTO newStore)
         throws ExecutionException, InterruptedException, SbhException {
-        log.info("About to create new store {}...", newStore.getName());
+        log.info("About to create new store {}, {}", newStore.getName(), newStore.getGeoLocation());
         StoreDraftDTO newStoreWithGeoLocation;
         if (null == newStore.getGeoLocation()) {
             log.info("Enriching the GeoLocation for new store");
