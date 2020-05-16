@@ -3,6 +3,7 @@ package com.diconiumwvv.storesservice.stores.dtos;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sphere.sdk.channels.Channel;
+import io.sphere.sdk.models.Address;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.List;
@@ -22,6 +23,21 @@ public class StoreToStoreDTOConverter implements Converter<Channel, StoreDTO> {
     public static final String EMAIL = "email";
     public static final String HOMEPAGE = "homepage";
 
+    private AddressDTO convertAddress(Address address) {
+        if (address == null) {
+            return new AddressDTO();
+        }
+        return AddressDTO.builder()
+                .streetName(address.getStreetName())
+                .streetNumber(address.getStreetNumber())
+                .postalCode(address.getPostalCode())
+                .city(address.getCity())
+                .region(address.getRegion())
+                .state(address.getState())
+                .country(address.getCountry().getAlpha2())
+                .build();
+    }
+
     @Override
     public StoreDTO convert(Channel channel) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -31,7 +47,7 @@ public class StoreToStoreDTOConverter implements Converter<Channel, StoreDTO> {
         builder.id(channel.getId())
                 .name(channel.getName())
                 .description(channel.getDescription())
-                .address(channel.getAddress())
+                .address(convertAddress(channel.getAddress()))
                 .geoLocation(channel.getGeoLocation());
 
         Optional.ofNullable(channel.getCustom()).ifPresent(customFields -> {

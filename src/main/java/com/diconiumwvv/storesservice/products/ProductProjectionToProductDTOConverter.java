@@ -2,13 +2,25 @@ package com.diconiumwvv.storesservice.products;
 
 import com.diconiumwvv.storesservice.products.dtos.PriceDTO;
 import com.diconiumwvv.storesservice.products.dtos.ProductDTO;
+import com.diconiumwvv.storesservice.products.dtos.ProductVariantDTO;
 import io.sphere.sdk.products.ProductProjection;
+import io.sphere.sdk.products.ProductVariant;
 import org.springframework.core.convert.converter.Converter;
 
 import javax.money.NumberValue;
 import java.math.BigDecimal;
 
 public class ProductProjectionToProductDTOConverter implements Converter<ProductProjection, ProductDTO> {
+
+    private ProductVariantDTO convertVariant(ProductVariant productVariant) {
+
+        return ProductVariantDTO.builder()
+                .id(productVariant.getId())
+                .sku(productVariant.getSku())
+                .images(productVariant.getImages())
+                .attributes(productVariant.getAttributes())
+                .build();
+    }
 
     @Override
     public ProductDTO convert(ProductProjection product) {
@@ -29,13 +41,8 @@ public class ProductProjectionToProductDTOConverter implements Converter<Product
         return builder.id(product.getId())
                 .name(product.getName())
                 .description(product.getDescription())
-                .categories(product.getCategories())
-                .categoryOrderHints(product.getCategoryOrderHints())
                 .slug(product.getSlug())
-                .metaTitle(product.getMetaTitle())
-                .metaDescription(product.getMetaDescription())
-                .masterVariant(product.getMasterVariant())
-                .variants(product.getVariants())
+                .masterVariant(convertVariant(product.getMasterVariant()))
                 .build();
     }
 }
