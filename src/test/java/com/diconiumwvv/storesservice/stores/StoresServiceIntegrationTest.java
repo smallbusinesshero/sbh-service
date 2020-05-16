@@ -61,26 +61,26 @@ class StoresServiceIntegrationTest {
 
     @Test
     void createStore() throws ExecutionException, InterruptedException, SbhException {
-        /*final StoreDraftDTO storeDraft = getStoreDraftDTO();
+        final StoreDraftDTO storeDraft = getStoreDraftDTO();
         storeDraft.setGeoLocation(GEO_LOCATION);
         StoreDTO createdStore = storesService.createStore(storeDraft);
         assertThat(createdStore).isNotNull();
         assertThat(createdStore.getGeoLocation()).isNotNull();
         assertThat(((Point) createdStore.getGeoLocation()).getLatitude()).isGreaterThan(40);
         assertThat(((Point) createdStore.getGeoLocation()).getLongitude()).isLessThan(20);
-        log.debug(createdStore.getGeoLocation().toString());*/
+        log.debug(createdStore.getGeoLocation().toString());
     }
 
     @Test
     void createStoreWithPrefilledGeolocation() throws ExecutionException, InterruptedException, SbhException {
-        /*final StoreDraftDTO storeDraft = getStoreDraftDTO();
+        final StoreDraftDTO storeDraft = getStoreDraftDTO();
         storeDraft.setGeoLocation(GEO_LOCATION);
         StoreDTO createdStore = storesService.createStore(storeDraft);
         assertThat(createdStore).isNotNull();
         assertThat(createdStore.getGeoLocation()).isNotNull();
         assertThat(((Point) createdStore.getGeoLocation()).getLatitude()).isEqualTo(LATITUDE);
         assertThat(((Point) createdStore.getGeoLocation()).getLongitude()).isEqualTo(LONGITUDE);
-        log.debug(createdStore.getGeoLocation().toString());*/
+        log.debug(createdStore.getGeoLocation().toString());
     }
 
     private StoreDraftDTO getStoreDraftDTO() {

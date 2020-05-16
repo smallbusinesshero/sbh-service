@@ -20,20 +20,20 @@ class GeoServiceIntegrationTest {
     @Autowired private GeoService geoService;
 
     @Test void shouldRetrieveGeoLocationForReducedAddress() throws SbhException, InterruptedException {
-        /*SEARCH_TERM = "Donaustraße, Berlin";
+        SEARCH_TERM = "Donaustraße, Berlin";
         Point geoLocation = geoService.retrieveGeoLocation(SEARCH_TERM);
         log.info("Result: {} ", geoLocation);
         assertThat(geoLocation).isNotNull();
         assertThat(geoLocation.getLatitude()).isGreaterThan(40);
-        assertThat(geoLocation.getLongitude()).isLessThan(20);*/
+        assertThat(geoLocation.getLongitude()).isLessThan(20);
     }
 
     @Test void shouldRetrieveGeoLocationForPostalCode() throws SbhException, InterruptedException {
-        /*SEARCH_TERM = "88400";
+        SEARCH_TERM = "88400";
         Point geoLocation = geoService.retrieveGeoLocation(SEARCH_TERM);
         log.info("Result: {} ", geoLocation);
         assertThat(geoLocation).isNotNull();
         assertThat(geoLocation.getLatitude()).isGreaterThan(40);
-        assertThat(geoLocation.getLongitude()).isLessThan(20);*/
+        assertThat(geoLocation.getLongitude()).isLessThan(20);
     }
 }
