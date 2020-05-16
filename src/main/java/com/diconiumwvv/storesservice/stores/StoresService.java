@@ -150,7 +150,7 @@ import java.util.stream.Collectors;
         log.info("About to create new store {}, {}", newStore.getName(), newStore.getGeoLocation());
         StoreDraftDTO newStoreWithGeoLocation;
         if (null == newStore.getGeoLocation()) {
-            log.info("Enriching the GeoLocation for new store");
+            log.info("Enriching the GeoLocation for new store {}, {}", newStore.getName(), newStore.getGeoLocation());
             newStoreWithGeoLocation = enrichStoreWithGeoLocation(newStore);
         } else {
             log.info("Available GeoLocation {} :", newStore.getGeoLocation());
