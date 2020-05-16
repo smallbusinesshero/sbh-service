@@ -36,6 +36,7 @@ public class GeoService {
     private GeocodingResult[] retrieveGeocodingResultForDefaultLocale(String searchTerm)
         throws InterruptedException, SbhException {
         try {
+            log.info("About to retrieve the geo location for {} with Language {} and Region {}:", searchTerm, Locale.getDefault().getLanguage(), Locale.getDefault().getCountry());
             return GeocodingApi.geocode(geoApiContext, searchTerm).
                 language(Locale.getDefault().getLanguage()).
                 region(Locale.getDefault().getCountry()).
@@ -46,6 +47,7 @@ public class GeoService {
     }
 
     private LatLng getFirstGeoLocation(GeocodingResult[] geoCodes) {
+        log.info("Geometry of the GeoLocation {} :", geoCodes[0].geometry);
         return geoCodes[0].geometry.location;
     }
 }
