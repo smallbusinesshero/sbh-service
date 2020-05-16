@@ -150,8 +150,10 @@ import java.util.stream.Collectors;
         log.info("About to create new store {}...", newStore.getName());
         StoreDraftDTO newStoreWithGeoLocation;
         if (null == newStore.getGeoLocation()) {
+            log.info("Enriching the GeoLocation for new store");
             newStoreWithGeoLocation = enrichStoreWithGeoLocation(newStore);
         } else {
+            log.info("Available GeoLocation {} :", newStore.getGeoLocation());
             newStoreWithGeoLocation = newStore;
         }
         ChannelDraft channelDraft =
@@ -179,6 +181,7 @@ import java.util.stream.Collectors;
             final String address = String
                 .format("%s %s, %s %s, Deutschland", streetName, streetNumber, postalCode, city);
             final Point geolocation;
+            log.info("GeoLocation of address {}", address);
             try {
                 geolocation = geoService.retrieveGeoLocation(address);
                 newStore.setGeoLocation(geolocation);
