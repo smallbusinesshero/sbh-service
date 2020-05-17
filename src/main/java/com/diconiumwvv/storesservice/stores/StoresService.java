@@ -63,7 +63,7 @@ import java.util.stream.Collectors;
             return false;
         }
         Boolean published = customFields.getFieldAsBoolean("published");
-        return published != null;
+        return published != null && published;
     }
 
     public List<StoreDTO> getAllStores() throws ExecutionException, InterruptedException {
