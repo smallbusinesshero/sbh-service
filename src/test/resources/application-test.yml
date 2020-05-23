@@ -18,11 +18,12 @@ swagger:
   showExtensions: false;
 
 ctp:
-  projectKey: wirvsvirusshop
-  clientId: run-with-profile-to-use-commerce-tools
-  clientSecret: run-with-profile-to-use-commerce-tools
-  authUrl: https://run-with-profile-to-use-commerce-tools.de
-  apiUrl: https://run-with-profile-to-use-commerce-tools.de
+  projectKey: smallbusinesshero_dev
+  clientId: -------replace with actual id------
+  clientSecret: -----replace with actual secret-------
+  authUrl: https://auth.europe-west1.gcp.commercetools.com
+  apiUrl: https://api.europe-west1.gcp.commercetools.com
+  scope: manage_project:smallbusinesshero_dev
 
 google:
   apiKey: asdfghjk
