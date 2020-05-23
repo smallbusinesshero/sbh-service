@@ -15,7 +15,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -60,10 +62,13 @@ class StoresServiceIntegrationTest {
     }
 
     @Test
-    void createStore() throws ExecutionException, InterruptedException, SbhException {
+    void createStore() throws ExecutionException, InterruptedException, SbhException, IOException {
+        // TODO adapt tests
+        MultipartFile shopOwnerImage = null;
+        MultipartFile profileImageURL = null;
         final StoreDraftDTO storeDraft = getStoreDraftDTO();
         storeDraft.setGeoLocation(GEO_LOCATION);
-        StoreDTO createdStore = storesService.createStore(storeDraft);
+        StoreDTO createdStore = storesService.createStore(storeDraft, shopOwnerImage, profileImageURL);
         assertThat(createdStore).isNotNull();
         assertThat(createdStore.getGeoLocation()).isNotNull();
         assertThat(((Point) createdStore.getGeoLocation()).getLatitude()).isGreaterThan(40);
@@ -72,10 +77,13 @@ class StoresServiceIntegrationTest {
     }
 
     @Test
-    void createStoreWithPrefilledGeolocation() throws ExecutionException, InterruptedException, SbhException {
+    void createStoreWithPrefilledGeolocation() throws ExecutionException, InterruptedException, SbhException, IOException {
+        // TODO adapt tests
+        MultipartFile shopOwnerImage = null;
+        MultipartFile profileImageURL = null;
         final StoreDraftDTO storeDraft = getStoreDraftDTO();
         storeDraft.setGeoLocation(GEO_LOCATION);
-        StoreDTO createdStore = storesService.createStore(storeDraft);
+        StoreDTO createdStore = storesService.createStore(storeDraft, shopOwnerImage, profileImageURL);
         assertThat(createdStore).isNotNull();
         assertThat(createdStore.getGeoLocation()).isNotNull();
         assertThat(((Point) createdStore.getGeoLocation()).getLatitude()).isEqualTo(LATITUDE);
