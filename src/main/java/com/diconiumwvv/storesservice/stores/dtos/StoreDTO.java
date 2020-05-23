@@ -12,30 +12,31 @@ import java.util.List;
 @Data
 @Builder
 @JsonPropertyOrder({
-          "id",
-          "name",
-          "description",
-          "address",
-          "neighborhood",
-          "geoLocation",
-          "profileImageURL",
-          "profileVideoURL",
-          "shopOwnerImage",
-          "contact",
-          "shopOwnerName",
-          "phone",
-          "email",
-          "homepage",
-          "shopCategory",
-          "contactWhatsapp",
-          "contactInstagram",
-          "contactFacebook",
-          "contactFacetime",
-          "contactSkype",
-          "contactTwitter",
-          "hasDelivery",
-          "hasPickup",
-          "hasShipping"
+        "id",
+        "name",
+        "description",
+        "address",
+        "neighborhood",
+        "geoLocation",
+        "profileImageURL",
+        "profileVideoURL",
+        "shopOwnerImage",
+        "contact",
+        "shopOwnerFirstName",
+        "shopOwnerLastName",
+        "contactEmail",
+        "contactHomepage",
+        "contactPhone",
+        "shopCategory",
+        "contactWhatsapp",
+        "contactInstagram",
+        "contactFacebook",
+        "contactFacetime",
+        "contactSkype",
+        "contactTwitter",
+        "hasDelivery",
+        "hasPickup",
+        "hasShipping"
 })
 public class StoreDTO {
 
@@ -49,11 +50,12 @@ public class StoreDTO {
     private String profileVideoURL;
     private String shopOwnerImage;
     private String contact;
-    private String shopOwnerName;
-    private String phone;
-    private String email;
-    private String homepage;
     private String shopCategory;
+    private String shopOwnerFirstName;
+    private String shopOwnerLastName;
+    private String contactEmail;
+    private String contactHomepage;
+    private String contactPhone;
     private String contactWhatsapp;
     private String contactInstagram;
     private String contactFacebook;

@@ -33,17 +33,14 @@ public class StoreDraftDTOToStoreDraftConverter implements Converter<StoreDraftD
                         .build()
         ));
 
-
         Map<String, Object> customFields = new HashMap<>();
         customFields.put("neighborhood", storeDraftDTO.getNeighborhood());
-        customFields.put("profileImageURL", storeDraftDTO.getProfileImageURL());
         customFields.put("profileVideoURL", storeDraftDTO.getProfileVideoURL());
-        customFields.put("shopOwnerImage", storeDraftDTO.getShopOwnerImage());
-        customFields.put("contact", storeDraftDTO.getContact());
-        customFields.put("shopOwnerName", storeDraftDTO.getShopOwnerName());
-        customFields.put("phone", storeDraftDTO.getPhone());
-        customFields.put("email", storeDraftDTO.getEmail());
-        customFields.put("homepage", storeDraftDTO.getHomepage());
+        customFields.put("shopOwnerFirstName", storeDraftDTO.getShopOwnerFirstName());
+        customFields.put("shopOwnerLastName", storeDraftDTO.getShopOwnerLastName());
+        customFields.put("contactEmail", storeDraftDTO.getContactEmail());
+        customFields.put("contactHomepage", storeDraftDTO.getContactHomepage());
+        customFields.put("contactPhone", storeDraftDTO.getContactPhone());
         customFields.put("shopCategory", storeDraftDTO.getShopCategory());
         customFields.put("contactWhatsapp", storeDraftDTO.getContactWhatsapp());
         customFields.put("contactInstagram", storeDraftDTO.getContactInstagram());

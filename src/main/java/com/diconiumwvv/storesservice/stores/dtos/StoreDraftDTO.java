@@ -17,15 +17,13 @@ public class StoreDraftDTO {
 
     // customs
     private List<String> neighborhood;
-    private String profileImageURL;
     private String profileVideoURL;
-    private String shopOwnerImage;
-    private String contact;
-    private String shopOwnerName;
-    private String phone;
-    private String email;
-    private String homepage;
     private String shopCategory;
+    private String shopOwnerFirstName;
+    private String shopOwnerLastName;
+    private String contactEmail;
+    private String contactHomepage;
+    private String contactPhone;
     private String contactWhatsapp;
     private String contactInstagram;
     private String contactFacebook;
