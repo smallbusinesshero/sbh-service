@@ -17,7 +17,7 @@ public class StoreToStoreDTOConverter implements Converter<Channel, StoreDTO> {
     public static final String SHOP_OWNER_IMAGE = "shopOwnerImage";
     public static final String CONTACT = "contact";
     public static final String PROFILE_VIDEO_URL = "profileVideoURL";
-    public static final String PROFILE_IMAGE_URL = "profileImageURL";
+    public static final String PROFILE_IMAGE = "profileImage";
     public static final String SHOP_OWNER_FIRSTNAME = "shopOwnerFirstName";
     public static final String SHOP_OWNER_LASTNAME = "shopOwnerLastName";
     public static final String CONTACT_EMAIL = "contactEmail";
@@ -68,7 +68,7 @@ public class StoreToStoreDTOConverter implements Converter<Channel, StoreDTO> {
             builder.shopOwnerImage(customFields.getFieldAsString(SHOP_OWNER_IMAGE));
             builder.contact(customFields.getFieldAsString(CONTACT));
             builder.profileVideoURL(customFields.getFieldAsString(PROFILE_VIDEO_URL));
-            builder.profileImageURL(customFields.getFieldAsString(PROFILE_IMAGE_URL));
+            builder.profileImage(customFields.getFieldAsString(PROFILE_IMAGE));
             builder.shopCategory(customFields.getFieldAsString(SHOP_CATEGORY));
             builder.contactEmail(customFields.getFieldAsString(CONTACT_EMAIL));
             builder.contactHomepage(customFields.getFieldAsString(CONTACT_HOMEPAGE));

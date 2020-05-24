@@ -18,7 +18,7 @@ import java.util.List;
         "address",
         "neighborhood",
         "geoLocation",
-        "profileImageURL",
+        "profileImage",
         "profileVideoURL",
         "shopOwnerImage",
         "contact",
@@ -46,7 +46,7 @@ public class StoreDTO {
     private AddressDTO address;
     private List<String> neighborhood;
     private GeoJSON geoLocation;
-    private String profileImageURL;
+    private String profileImage;
     private String profileVideoURL;
     private String shopOwnerImage;
     private String contact;
