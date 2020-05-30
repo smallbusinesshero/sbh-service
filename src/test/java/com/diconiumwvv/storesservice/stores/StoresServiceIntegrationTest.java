@@ -1,6 +1,7 @@
 package com.diconiumwvv.storesservice.stores;
 
 import com.diconiumwvv.storesservice.exceptions.SbhException;
+import com.diconiumwvv.storesservice.stores.dtos.AddressDTO;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDTO;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDraftDTO;
 import com.neovisionaries.i18n.CountryCode;
@@ -91,11 +92,13 @@ class StoresServiceIntegrationTest {
         return storeDraft;
     }
 
-    private Address createTestAddress() {
-        return Address.of(CountryCode.DE)
-            .withCity("Berlin")
-            .withStreetName("Donaustraße")
-            .withPostalCode("12045")
-            .withStreetNumber("1");
+    private AddressDTO createTestAddress() {
+        return AddressDTO.builder()
+                .country("DE")
+                .city("Berlin")
+                .streetName("Donaustraße")
+                .postalCode("12045")
+                .streetNumber("1")
+                .build();
     }
 }
