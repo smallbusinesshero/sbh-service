@@ -7,7 +7,10 @@ import io.sphere.sdk.client.BlockingSphereClient;
 import io.sphere.sdk.products.Product;
 import io.sphere.sdk.products.ProductDraft;
 import io.sphere.sdk.products.ProductProjection;
+import io.sphere.sdk.products.ProductProjectionType;
 import io.sphere.sdk.products.commands.ProductCreateCommand;
+import io.sphere.sdk.products.commands.ProductUpdateCommand;
+import io.sphere.sdk.products.commands.updateactions.Publish;
 import io.sphere.sdk.products.queries.ProductProjectionByIdGet;
 import io.sphere.sdk.products.queries.ProductProjectionQuery;
 import io.sphere.sdk.queries.PagedQueryResult;
@@ -59,10 +62,9 @@ public class ProductsService {
         }
 
         Product product = client.execute(ProductCreateCommand.of(productDraft)).toCompletableFuture().get();
+        Product publishedProduct = client.execute(ProductUpdateCommand.of(product, Publish.of())).toCompletableFuture().get();
 
         // TODO: combine product with store
-        // TODO: publish product
-        // TODO: implement ProductToProductDTO converter
-        return conversionService.convert(product, ProductDTO.class);
+        return conversionService.convert(publishedProduct.toProjection(ProductProjectionType.CURRENT), ProductDTO.class);
     }
 }
