@@ -1,6 +1,5 @@
 package com.diconiumwvv.storesservice;
 
-import com.diconiumwvv.storesservice.products.ProductDraftDTOToProductDraftConverter;
 import com.diconiumwvv.storesservice.products.ProductProjectionToProductDTOConverter;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDraftDTOToStoreDraftConverter;
 import com.diconiumwvv.storesservice.stores.dtos.StoreToStoreDTOConverter;
@@ -14,7 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new ProductProjectionToProductDTOConverter());
-        registry.addConverter(new ProductDraftDTOToProductDraftConverter());
         registry.addConverter(new StoreToStoreDTOConverter());
         registry.addConverter(new StoreDraftDTOToStoreDraftConverter());
     }
