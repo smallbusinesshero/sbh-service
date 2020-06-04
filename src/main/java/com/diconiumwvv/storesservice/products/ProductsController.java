@@ -65,11 +65,11 @@ public class ProductsController {
     public ProductDTO createProduct(
             @ApiParam(
                     value = "id",
-                    name = "Store ID",
+                    name = "id",
                     example = "ddf24dc6-1a2d-4391-8f34-c5c322b21c1e")
             @PathVariable String id,
             @RequestBody ProductDraftDTO productDraftDTO
     ) throws InterruptedException, ExecutionException, SbhException {
-        return productsService.createProduct(productDraftDTO);
+        return productsService.createProduct(productDraftDTO, id);
     }
 }

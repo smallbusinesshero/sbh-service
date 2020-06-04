@@ -3,6 +3,8 @@ package com.diconiumwvv.storesservice.products;
 import com.diconiumwvv.storesservice.exceptions.SbhException;
 import com.diconiumwvv.storesservice.products.dtos.ProductDTO;
 import com.diconiumwvv.storesservice.products.dtos.ProductDraftDTO;
+import com.diconiumwvv.storesservice.stores.StoresService;
+import io.sphere.sdk.channels.Channel;
 import io.sphere.sdk.client.BlockingSphereClient;
 import io.sphere.sdk.products.Product;
 import io.sphere.sdk.products.ProductDraft;
@@ -33,6 +35,12 @@ public class ProductsService {
     @Resource
     private ConversionService conversionService;
 
+    @Resource
+    private ProductCTConverter productCTConverter;
+
+    @Resource
+    private StoresService storesService;
+
 
     public ProductProjection getProductByID(String productId) {
         return client.executeBlocking(ProductProjectionByIdGet.ofCurrent(productId));
@@ -53,10 +61,20 @@ public class ProductsService {
         return pagedQueryResult.getResults();
     }
 
-    public ProductDTO createProduct(final ProductDraftDTO productDraftDTO) throws SbhException, ExecutionException, InterruptedException {
-        log.info("About to create a new product {}", productDraftDTO.getName());
+    public ProductDTO createProduct(final ProductDraftDTO productDraftDTO, final String channelId)
+            throws SbhException, ExecutionException, InterruptedException {
+        log.info("About to create a new product {} {}", productDraftDTO.getName(), channelId);
 
-        ProductDraft productDraft = conversionService.convert(productDraftDTO, ProductDraft.class);
+        if (channelId == null || productDraftDTO.getName() == null) {
+            throw new SbhException("Product incomplete. Could not create product.");
+        }
+
+        Channel store = storesService.getStoreForID(channelId);
+        if (store == null) {
+            throw new SbhException("Store for your product is not available.");
+        }
+
+        ProductDraft productDraft = productCTConverter.convert(productDraftDTO, store, "default-product-type");
         if (productDraft == null) {
             throw new SbhException("Product draft could not be converted.");
         }
@@ -64,7 +82,6 @@ public class ProductsService {
         Product product = client.execute(ProductCreateCommand.of(productDraft)).toCompletableFuture().get();
         Product publishedProduct = client.execute(ProductUpdateCommand.of(product, Publish.of())).toCompletableFuture().get();
 
-        // TODO: combine product with store
         return conversionService.convert(publishedProduct.toProjection(ProductProjectionType.CURRENT), ProductDTO.class);
     }
 }
