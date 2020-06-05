@@ -27,10 +27,14 @@ public class UploadService {
     public String uploadToProductAndGetUrl(MultipartFile shopOwnerImage) throws IOException {
         Product product = getProductByKey(SHOP_IMAGES_PRODUCT_KEY);
         final String fileName = UUID.randomUUID().toString().substring(0, 12);
-        final ProductImageUploadCommand uploadCommand = getImageUploadCommand(shopOwnerImage, product, fileName);
-        Product updatedProduct = client.executeBlocking(uploadCommand);
+        Product updatedProduct = uploadImageToProduct(shopOwnerImage, product, fileName);
         final Image uploadedImage = getUploadedImage(fileName, updatedProduct);
         return uploadedImage.getUrl();
+    }
+
+    public Product uploadImageToProduct(MultipartFile image, Product product, String fileName) throws IOException {
+        final ProductImageUploadCommand uploadCommand = getImageUploadCommand(image, product, fileName);
+        return client.executeBlocking(uploadCommand);
     }
 
     private Image getUploadedImage(String fileName, Product updatedProduct) {

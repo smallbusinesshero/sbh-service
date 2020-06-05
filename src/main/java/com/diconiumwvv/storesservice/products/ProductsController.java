@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -75,7 +76,7 @@ public class ProductsController {
             @PathVariable String id,
             @ApiParam(value = "productData") @RequestPart(value = "productData") ProductDraftDTO productDraftDTO,
             @RequestPart(value = "productImage", required = false) MultipartFile productImage
-    ) throws InterruptedException, ExecutionException, SbhException {
-        return productsService.createProduct(productDraftDTO, id);
+    ) throws InterruptedException, ExecutionException, SbhException, IOException {
+        return productsService.createProduct(productDraftDTO, id, productImage);
     }
 }

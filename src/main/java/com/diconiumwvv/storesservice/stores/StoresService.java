@@ -183,8 +183,9 @@ import java.util.stream.Collectors;
     private void uploadImagesAndSetUrls(MultipartFile shopOwnerImage, MultipartFile profileImageURL, StoreDraftDTO newStoreWithGeoLocation) throws IOException {
         String shopOwnerImageUrl = uploadService.uploadToProductAndGetUrl(shopOwnerImage);
         String profileImageURLUrl = uploadService.uploadToProductAndGetUrl(profileImageURL);
-        newStoreWithGeoLocation.setShopOwnerImage(shopOwnerImageUrl);
-        newStoreWithGeoLocation.setProfileImageURL(profileImageURLUrl);
+        // TODO use custom converter that uses these urls without exposing them to Frontend
+//        newStoreWithGeoLocation.setShopOwnerImage(shopOwnerImageUrl);
+//        newStoreWithGeoLocation.setProfileImageURL(profileImageURLUrl);
     }
 
     private StoreDraftDTO enrichStoreWithGeoLocation(final StoreDraftDTO newStore)
