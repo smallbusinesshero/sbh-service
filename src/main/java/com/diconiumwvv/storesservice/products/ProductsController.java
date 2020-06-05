@@ -8,6 +8,7 @@ import io.swagger.annotations.*;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -56,19 +57,24 @@ public class ProductsController {
         return conversionService.convert(productByID, ProductDTO.class);
     }
 
-    @ApiOperation(value = "Create Product")
+    @ApiOperation(value = "Create Product", notes = "The auto generated swagger does not set the Content-Type of productData correctly and cannot be used here.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "ok"),
-            @ApiResponse(code = 500, message = "An unexpected error occured")
+            @ApiResponse(code = 500, message = "An unexpected error occurred")
     })
-    @PostMapping(value = "/stores/{id}/products", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(
+            value = "/stores/{id}/products",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
     public ProductDTO createProduct(
             @ApiParam(
                     value = "id",
                     name = "id",
                     example = "ddf24dc6-1a2d-4391-8f34-c5c322b21c1e")
             @PathVariable String id,
-            @RequestBody ProductDraftDTO productDraftDTO
+            @ApiParam(value = "productData") @RequestPart(value = "productData") ProductDraftDTO productDraftDTO,
+            @RequestPart(value = "productImage", required = false) MultipartFile productImage
     ) throws InterruptedException, ExecutionException, SbhException {
         return productsService.createProduct(productDraftDTO, id);
     }
