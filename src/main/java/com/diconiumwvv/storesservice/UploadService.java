@@ -27,9 +27,12 @@ public class UploadService {
     public String uploadToProductAndGetUrl(MultipartFile shopOwnerImage) throws IOException {
         Product product = getProductByKey(SHOP_IMAGES_PRODUCT_KEY);
         final String fileName = UUID.randomUUID().toString().substring(0, 12);
-        final ProductImageUploadCommand uploadCommand = getImageUploadCommand(shopOwnerImage, product, fileName);
+        final File tempFile = createFileFromMultipart(shopOwnerImage, fileName);
+        final ProductImageUploadCommand uploadCommand = getImageUploadCommand(tempFile, product, fileName);
         Product updatedProduct = client.executeBlocking(uploadCommand);
         final Image uploadedImage = getUploadedImage(fileName, updatedProduct);
+        // delete temporary file
+        tempFile.delete();
         return uploadedImage.getUrl();
     }
 
@@ -40,18 +43,18 @@ public class UploadService {
         .findFirst().get();
     }
 
-    private ProductImageUploadCommand getImageUploadCommand(MultipartFile shopOwnerImage, Product product, String fileName) throws IOException {
+    private ProductImageUploadCommand getImageUploadCommand(File file, Product product, String fileName) throws IOException {
         return ProductImageUploadCommand
-                .ofMasterVariant(getFile(shopOwnerImage), product.getId())
+                .ofMasterVariant(file, product.getId())
                 .withFilename(fileName)
                 .withStaged(true);
     }
 
-    private File getFile(MultipartFile file) throws IOException {
-        File convertedFile = new File(file.getOriginalFilename());
+    private File createFileFromMultipart(MultipartFile multipartFile, String fileName) throws IOException {
+        File convertedFile = new File(fileName);
         convertedFile.createNewFile();
         FileOutputStream fos = new FileOutputStream(convertedFile);
-        fos.write(file.getBytes());
+        fos.write(multipartFile.getBytes());
         fos.close();
         return convertedFile;
     }

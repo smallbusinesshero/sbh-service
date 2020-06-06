@@ -74,7 +74,6 @@ public class StoresController {
             @RequestPart(value = "shopOwnerImage") MultipartFile shopOwnerImage,
             @RequestPart(value = "profileImageURL") MultipartFile profileImageURL
     ) throws ExecutionException, InterruptedException, SbhException, IOException {
-
         return storesService.createStore(storeDraftDTO, shopOwnerImage, profileImageURL);
     }
 }
