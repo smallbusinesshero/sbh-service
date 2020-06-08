@@ -16,7 +16,9 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -89,8 +91,11 @@ class StoresControllerTest {
             .getForEntity(storesEndpoint, StoreDTO.class));
     }
 
-    @Test void createStore() throws ExecutionException, InterruptedException, SbhException {
-        given(storesService.createStore(any())).willReturn(store);
+    @Test void createStore() throws ExecutionException, InterruptedException, SbhException, IOException {
+        // TODO adapt tests
+        MultipartFile shopOwnerImage = null;
+        MultipartFile profileImageURL = null;
+        given(storesService.createStore(any(), shopOwnerImage, profileImageURL)).willReturn(store);
 
         StoreDraftDTO storeDraft = new StoreDraftDTO();
         storeDraft.setName(LOCALIZED_STORE_NAME);

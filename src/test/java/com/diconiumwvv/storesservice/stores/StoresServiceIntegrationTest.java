@@ -1,6 +1,7 @@
 package com.diconiumwvv.storesservice.stores;
 
 import com.diconiumwvv.storesservice.exceptions.SbhException;
+import com.diconiumwvv.storesservice.stores.dtos.AddressDTO;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDTO;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDraftDTO;
 import com.neovisionaries.i18n.CountryCode;
@@ -15,7 +16,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -60,10 +63,13 @@ class StoresServiceIntegrationTest {
     }
 
     @Test
-    void createStore() throws ExecutionException, InterruptedException, SbhException {
+    void createStore() throws ExecutionException, InterruptedException, SbhException, IOException {
+        // TODO adapt tests
+        MultipartFile shopOwnerImage = null;
+        MultipartFile profileImageURL = null;
         final StoreDraftDTO storeDraft = getStoreDraftDTO();
         storeDraft.setGeoLocation(GEO_LOCATION);
-        StoreDTO createdStore = storesService.createStore(storeDraft);
+        StoreDTO createdStore = storesService.createStore(storeDraft, shopOwnerImage, profileImageURL);
         assertThat(createdStore).isNotNull();
         assertThat(createdStore.getGeoLocation()).isNotNull();
         assertThat(((Point) createdStore.getGeoLocation()).getLatitude()).isGreaterThan(40);
@@ -72,10 +78,13 @@ class StoresServiceIntegrationTest {
     }
 
     @Test
-    void createStoreWithPrefilledGeolocation() throws ExecutionException, InterruptedException, SbhException {
+    void createStoreWithPrefilledGeolocation() throws ExecutionException, InterruptedException, SbhException, IOException {
+        // TODO adapt tests
+        MultipartFile shopOwnerImage = null;
+        MultipartFile profileImageURL = null;
         final StoreDraftDTO storeDraft = getStoreDraftDTO();
         storeDraft.setGeoLocation(GEO_LOCATION);
-        StoreDTO createdStore = storesService.createStore(storeDraft);
+        StoreDTO createdStore = storesService.createStore(storeDraft, shopOwnerImage, profileImageURL);
         assertThat(createdStore).isNotNull();
         assertThat(createdStore.getGeoLocation()).isNotNull();
         assertThat(((Point) createdStore.getGeoLocation()).getLatitude()).isEqualTo(LATITUDE);
@@ -91,11 +100,13 @@ class StoresServiceIntegrationTest {
         return storeDraft;
     }
 
-    private Address createTestAddress() {
-        return Address.of(CountryCode.DE)
-            .withCity("Berlin")
-            .withStreetName("Donaustraße")
-            .withPostalCode("12045")
-            .withStreetNumber("1");
+    private AddressDTO createTestAddress() {
+        return AddressDTO.builder()
+                .country("DE")
+                .city("Berlin")
+                .streetName("Donaustraße")
+                .postalCode("12045")
+                .streetNumber("1")
+                .build();
     }
 }
