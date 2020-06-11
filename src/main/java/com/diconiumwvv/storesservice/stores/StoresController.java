@@ -8,8 +8,10 @@ import io.swagger.annotations.*;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -65,11 +67,13 @@ public class StoresController {
             @ApiResponse(code = 200, message = "ok"),
             @ApiResponse(code = 500, message = "An unexpected error occurred")
     })
-    @PostMapping(value = "/stores/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/stores/", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public StoreDTO createStore(
-            @ApiParam(value="storeDraftDTO")
-            @RequestBody StoreDraftDTO storeDraftDTO
-    ) throws ExecutionException, InterruptedException, SbhException {
-        return storesService.createStore(storeDraftDTO);
+            @ApiParam(value = "storeDraftDTO")
+                @RequestPart(value = "storeDraftDTO") StoreDraftDTO storeDraftDTO,
+            @RequestPart(value = "shopOwnerImage") MultipartFile shopOwnerImage,
+            @RequestPart(value = "profileImageURL") MultipartFile profileImageURL
+    ) throws ExecutionException, InterruptedException, SbhException, IOException {
+        return storesService.createStore(storeDraftDTO, shopOwnerImage, profileImageURL);
     }
 }

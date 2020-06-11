@@ -26,5 +26,4 @@ public class AuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
         setRealmName("SmallBusinessHero");
         super.afterPropertiesSet();
     }
-
 }

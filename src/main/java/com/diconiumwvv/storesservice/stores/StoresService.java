@@ -1,5 +1,6 @@
 package com.diconiumwvv.storesservice.stores;
 
+import com.diconiumwvv.storesservice.UploadService;
 import com.diconiumwvv.storesservice.exceptions.SbhException;
 import com.diconiumwvv.storesservice.geo.GeoService;
 import com.diconiumwvv.storesservice.stores.dtos.StoreDTO;
@@ -14,13 +15,17 @@ import io.sphere.sdk.client.BlockingSphereClient;
 import io.sphere.sdk.models.Point;
 import io.sphere.sdk.queries.PagedQueryResult;
 import io.sphere.sdk.types.CustomFields;
+import io.sphere.sdk.types.CustomFieldsDraft;
+import io.sphere.sdk.types.CustomFieldsDraftBuilder;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +40,10 @@ import java.util.stream.Collectors;
     @Resource private ConversionService conversionService;
 
     @Resource private GeoService geoService;
+
+    @Resource
+    private UploadService uploadService;
+
 
     public Channel getStoreForID(String channelId) throws ExecutionException, InterruptedException {
         CompletionStage<Channel> future = commerceToolsClient.execute(ChannelByIdGet.of(channelId));
@@ -145,8 +154,8 @@ import java.util.stream.Collectors;
         return storesSearchResult;
     }
 
-    public StoreDTO createStore(final StoreDraftDTO newStore)
-        throws ExecutionException, InterruptedException, SbhException {
+    public StoreDTO createStore(final StoreDraftDTO newStore, MultipartFile shopOwnerImage, MultipartFile profileImageURL)
+            throws ExecutionException, InterruptedException, SbhException, IOException {
         log.info("About to create new store {}, {}", newStore.getName(), newStore.getGeoLocation());
         StoreDraftDTO newStoreWithGeoLocation;
         if (null == newStore.getGeoLocation()) {
@@ -156,15 +165,26 @@ import java.util.stream.Collectors;
             log.info("Available GeoLocation {} :", newStore.getGeoLocation());
             newStoreWithGeoLocation = newStore;
         }
+
+        uploadImagesAndSetUrls(shopOwnerImage, profileImageURL, newStoreWithGeoLocation);
+
         ChannelDraft channelDraft =
             conversionService.convert(newStoreWithGeoLocation, ChannelDraft.class);
         if (null == channelDraft) {
             throw new SbhException("Channel draft could not be converted.");
         }
+
         Channel channel =
             commerceToolsClient.execute(ChannelCreateCommand.of(channelDraft)).toCompletableFuture()
                 .get();
         return conversionService.convert(channel, StoreDTO.class);
+    }
+
+    private void uploadImagesAndSetUrls(MultipartFile shopOwnerImage, MultipartFile profileImageURL, StoreDraftDTO newStoreWithGeoLocation) throws IOException {
+        String shopOwnerImageUrl = uploadService.uploadToProductAndGetUrl(shopOwnerImage);
+        String profileImageURLUrl = uploadService.uploadToProductAndGetUrl(profileImageURL);
+        newStoreWithGeoLocation.setShopOwnerImage(shopOwnerImageUrl);
+        newStoreWithGeoLocation.setProfileImageURL(profileImageURLUrl);
     }
 
     private StoreDraftDTO enrichStoreWithGeoLocation(final StoreDraftDTO newStore)
